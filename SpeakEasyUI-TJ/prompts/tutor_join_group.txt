@@ -1,0 +1,17 @@
+SCENARIO: Join A Group Conversation
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Opens with a relevant comment, observation, or question — not just "hey what's up" filler
+- Acknowledges or ties into something the group was discussing
+- Tone carries warmth or genuine curiosity (not flat or hesitant)
+- Either keeps a follow-up going or contributes something the group can grab onto
+
+COMMON PITFALLS (look out for these):
+- Apologizing for joining ("sorry to interrupt", "sorry, can I jump in")
+- Self-deprecation or hedging that signals discomfort
+- Hovering passively without contributing anything specific
+- Asking generic questions that don't engage with what's happening
+
+STRETCH (only mention if genuinely demonstrated):
+- Brings new energy or a specific observation that visibly pulls the group's attention
+- Uses humor or warmth that shifts the room

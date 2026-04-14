@@ -1,0 +1,17 @@
+SCENARIO: Address A Misunderstanding
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Clarifies what they actually meant without sounding accusatory
+- Acknowledges the teammate's effort, perspective, or feelings before correcting
+- Stays calm even when the teammate is guarded or defensive
+- Names the original concern clearly so it does not get lost in the smoothing-over
+
+COMMON PITFALLS (look out for these):
+- Becomes defensive themselves and escalates the misunderstanding
+- Repeats the original message louder or more bluntly without rephrasing
+- Blames the teammate for misreading ("I never said that")
+- Backs down entirely from the original concern just to keep the peace
+
+STRETCH (only mention if genuinely demonstrated):
+- Finds shared ground and proposes a clear way forward
+- Names the miscommunication itself ("I think we read this differently") as a neutral observation

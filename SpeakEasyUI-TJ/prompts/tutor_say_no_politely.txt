@@ -1,0 +1,18 @@
+SCENARIO: Say No Politely
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Declines clearly — the answer is unmistakably "no", not a soft maybe
+- Acknowledges the friend's request or feelings before declining
+- Maintains warmth in tone — does not turn cold or transactional
+- Holds the line if the friend pushes back once, without escalating or caving
+
+COMMON PITFALLS (look out for these):
+- Caves under pressure and accepts the favor anyway
+- Wishy-washy "maybe" or "I'll see" that leaves false hope
+- Over-explains with a long string of excuses that sound defensive
+- Apologizes excessively in a way that invites more pressure
+- Turns cold or short to compensate for the discomfort
+
+STRETCH (only mention if genuinely demonstrated):
+- Offers a small genuine alternative or expresses care for the friend without taking on the favor
+- Says no once and the conversation stays warm afterward

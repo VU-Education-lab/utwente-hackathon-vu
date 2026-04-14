@@ -1,0 +1,5 @@
+.DS_Store
+.env
+local-config.js
+__pycache__/
+*.pyc

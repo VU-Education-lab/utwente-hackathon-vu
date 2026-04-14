@@ -1,0 +1,2358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpeakEasy Coach</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
+
+      :root {
+        --bg: #f5efe2;
+        --panel: #fffdf8;
+        --panel-soft: #f8f3e8;
+        --ink: #1f2a36;
+        --muted: #5e6b78;
+        --accent: #ff6b35;
+        --accent-2: #118ab2;
+        --good: #2a9d8f;
+        --warn: #c96922;
+        --line: #d5c8ae;
+        --shadow: 0 16px 40px rgba(31, 42, 54, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "IBM Plex Sans", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 8% 10%, #ffe9cc 0%, transparent 35%),
+          radial-gradient(circle at 92% 90%, #cde7f2 0%, transparent 38%),
+          var(--bg);
+      }
+
+      .shell {
+        max-width: 1150px;
+        margin: 28px auto;
+        padding: 0 16px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .title {
+        margin: 0;
+        font: 700 1.8rem/1 "Space Grotesk", sans-serif;
+        letter-spacing: 0.01em;
+      }
+
+      .subtitle {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(74px, 1fr));
+        gap: 8px;
+        margin: 10px 0 18px;
+      }
+
+      .step {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff6e6;
+        color: #7f6b44;
+        padding: 8px 6px;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .step.active {
+        background: #fff;
+        border-color: var(--accent);
+        color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.15);
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid #eadfc9;
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .screen {
+        display: none;
+        animation: reveal 220ms ease;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .screen h2 {
+        margin: 2px 0 5px;
+        font: 700 1.4rem/1.2 "Space Grotesk", sans-serif;
+      }
+
+      .small {
+        color: var(--muted);
+        margin: 0 0 14px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .scenario {
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .scenario h3 {
+        margin: 0 0 6px;
+        font-size: 1rem;
+      }
+
+      .scenario.hidden {
+        display: none;
+      }
+
+      .filter-panel {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fffaf0;
+        padding: 12px;
+        margin-bottom: 14px;
+      }
+
+      .filter-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) auto auto;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .field label {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .field select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        padding: 8px;
+        font: 500 0.9rem/1 "IBM Plex Sans", sans-serif;
+      }
+
+      .advanced-filters {
+        display: none;
+        margin-top: 10px;
+      }
+
+      .advanced-filters.open {
+        display: block;
+      }
+
+      .advanced-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .category-group {
+        margin-bottom: 14px;
+      }
+
+      .category-title {
+        margin: 0 0 8px;
+        font: 700 1.05rem/1.2 "Space Grotesk", sans-serif;
+        color: #30414f;
+      }
+
+      .empty-state {
+        display: none;
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        color: var(--muted);
+        background: #fff;
+      }
+
+      .compact-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .pill {
+        display: inline-block;
+        font-size: 0.75rem;
+        padding: 3px 9px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        margin-right: 5px;
+      }
+
+      .focus {
+        margin-top: 6px;
+        font-size: 0.9rem;
+        color: #334452;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font: 600 0.92rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #e7eef4;
+        color: #1f3f54;
+      }
+
+      .btn-ghost {
+        background: #f4ede0;
+        color: #5a513f;
+      }
+
+      .config {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 10px;
+        margin: 8px 0;
+      }
+
+      .label {
+        color: var(--muted);
+      }
+
+      .value {
+        font-weight: 600;
+      }
+
+      .call-stage {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #fcf7ec, #fff);
+        min-height: 280px;
+        padding: 16px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+      }
+
+      .orb {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 32% 30%, #95d5ea, #118ab2);
+        box-shadow: 0 8px 22px rgba(17, 138, 178, 0.35);
+        animation: pulse 2s ease-in-out infinite;
+        margin-bottom: 14px;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.06);
+        }
+      }
+
+      .assistant-line {
+        margin: 8px 0 0;
+        color: #2f4f62;
+        font-weight: 600;
+      }
+
+      .timeline {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+      }
+
+      .moment {
+        padding: 8px;
+        border-radius: 8px;
+        margin-bottom: 6px;
+      }
+
+      .moment.good {
+        background: #e7f6f3;
+        border: 1px solid #bce3db;
+      }
+
+      .moment.warn {
+        background: #fff0e4;
+        border: 1px solid #f5caa8;
+      }
+
+      .metric {
+        margin: 9px 0;
+      }
+
+      .bar {
+        height: 10px;
+        border-radius: 999px;
+        background: #e8e1d0;
+        overflow: hidden;
+      }
+
+      .bar > span {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--accent-2), var(--good));
+      }
+
+      .footer-note {
+        margin-top: 15px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .chat-stage {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        background: linear-gradient(180deg, #fcf7ec, #fff);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+      }
+
+      .orb-small {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 32% 30%, #95d5ea, #118ab2);
+        box-shadow: 0 4px 14px rgba(17, 138, 178, 0.3);
+        flex-shrink: 0;
+        animation: pulse 2.4s ease-in-out infinite;
+      }
+
+      .orb-small.thinking {
+        background: radial-gradient(circle at 32% 30%, #ffc88a, #ff6b35);
+        box-shadow: 0 4px 14px rgba(255, 107, 53, 0.35);
+      }
+
+      .chat-header-meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-header-meta strong {
+        font: 600 0.95rem/1.2 "Space Grotesk", sans-serif;
+      }
+
+      .chat-header-meta span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .chat-log {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+        min-height: 240px;
+        max-height: 440px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .chat-empty {
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin: auto;
+        text-align: center;
+      }
+
+      .chat-msg {
+        max-width: 78%;
+        padding: 9px 13px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+        line-height: 1.35;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+
+      .chat-msg.partner {
+        align-self: flex-start;
+        background: #f4ede0;
+        color: #3a3526;
+        border-bottom-left-radius: 4px;
+      }
+
+      .chat-msg.user {
+        align-self: flex-end;
+        background: var(--accent);
+        color: #fff;
+        border-bottom-right-radius: 4px;
+      }
+
+      .chat-msg.thinking {
+        align-self: flex-start;
+        background: #f4ede0;
+        color: #7f6b44;
+        font-style: italic;
+        opacity: 0.85;
+      }
+
+      .chat-input-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .chat-input-row input {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 11px 13px;
+        font: 500 0.95rem/1 "IBM Plex Sans", sans-serif;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .chat-input-row input:focus {
+        outline: 2px solid rgba(255, 107, 53, 0.35);
+        border-color: var(--accent);
+      }
+
+      /* ── Voice mode ── */
+      .voice-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 14px 6px;
+      }
+
+      .voice-status {
+        font-size: 0.92rem;
+        color: var(--muted);
+        text-align: center;
+        min-height: 20px;
+      }
+
+      .voice-status.live {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .orb-call {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 32% 30%, #95d5ea, #118ab2);
+        box-shadow: 0 8px 28px rgba(17, 138, 178, 0.35);
+        position: relative;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      }
+
+      .orb-call.dialing {
+        animation: orbDial 1.4s ease-in-out infinite;
+      }
+
+      .orb-call.speaking {
+        animation: orbSpeak 1s ease-in-out infinite;
+      }
+
+      .orb-call.listening {
+        background: radial-gradient(circle at 32% 30%, #ffc88a, #ff6b35);
+        box-shadow: 0 8px 28px rgba(255, 107, 53, 0.4);
+        transform: scale(1.05);
+      }
+
+      @keyframes orbDial {
+        0%, 100% { transform: scale(1); opacity: 0.85; }
+        50%      { transform: scale(1.08); opacity: 1; }
+      }
+
+      @keyframes orbSpeak {
+        0%, 100% { transform: scale(1); }
+        50%      { transform: scale(1.06); }
+      }
+
+      .ptt-button {
+        width: 100%;
+        max-width: 320px;
+        height: 64px;
+        border-radius: 16px;
+        border: 2px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        font: 600 1rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+        transition: all 0.12s ease;
+        box-shadow: 0 2px 8px rgba(31, 42, 54, 0.06);
+      }
+
+      .ptt-button:hover:not(:disabled) {
+        border-color: var(--accent);
+      }
+
+      .ptt-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .ptt-button.pressed {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        transform: scale(0.98);
+        box-shadow: 0 0 0 6px rgba(255, 107, 53, 0.18);
+      }
+
+      .ptt-mic {
+        font-size: 1.4rem;
+      }
+
+      .voice-hint {
+        font-size: 0.8rem;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .call-controls {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 4px;
+      }
+
+      .btn-end-call {
+        background: none;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 18px;
+        color: var(--muted);
+        font: 500 0.85rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .btn-end-call:hover {
+        border-color: #d97070;
+        color: #d97070;
+      }
+
+      /* ── Live coaching score (during call) ── */
+      .live-score {
+        width: 100%;
+        max-width: 380px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 10px 12px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      .live-score-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .live-score-track {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        border-radius: 15px;
+        background: linear-gradient(to right, #d97070, #c96922, #d3c170, #6fc28e, #2a9d8f);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.12);
+      }
+
+      .live-score-thumb {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+        border: 2px solid rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        transition: left 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .live-score-ends {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        color: var(--muted);
+        padding: 0 4px;
+      }
+
+      /* ── Breathing exercise (setup screen) ── */
+      .breath-card {
+        margin-top: 14px;
+        padding: 16px;
+        background: #eaf3f7;
+        border: 1px solid #c5d8e0;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .breath-title {
+        font: 600 0.85rem/1 "Space Grotesk", sans-serif;
+        color: var(--accent-2);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .breath-circle {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        background: rgba(17, 138, 178, 0.18);
+        border: 2px solid rgba(17, 138, 178, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font: 600 0.85rem/1 "IBM Plex Sans", sans-serif;
+        color: var(--accent-2);
+        transition: transform 4s ease-in-out, opacity 4s ease-in-out;
+      }
+
+      .breath-circle.expand {
+        transform: scale(1.45);
+        opacity: 1;
+      }
+
+      .breath-circle.contract {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+
+      .breath-sub {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      .breath-skip {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 0.78rem;
+        cursor: pointer;
+        text-decoration: underline;
+        font-family: inherit;
+      }
+
+      /* ── Feedback layout: transcript + coaching side by side ── */
+      .feedback-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      .feedback-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      @media (max-width: 760px) {
+        .feedback-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── Transcript on feedback screen ── */
+      .feedback-transcript {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        /* stretch to match the feedback column height */
+        min-height: 0;
+      }
+
+      .feedback-transcript-header {
+        padding: 10px 14px;
+        font: 600 0.78rem/1 "Space Grotesk", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: #fcf7ec;
+        border-bottom: 1px solid var(--line);
+        flex-shrink: 0;
+      }
+
+      .feedback-transcript-body {
+        padding: 14px;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .ft-msg {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border-left: 3px solid transparent;
+        background: #fbf7ee;
+      }
+
+      .ft-msg.user {
+        background: #fff1e8;
+      }
+
+      .ft-msg .who {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .ft-msg.partner .who { color: #7f6b44; }
+      .ft-msg.user .who    { color: var(--accent); }
+
+      .ft-msg .text {
+        font-size: 0.92rem;
+        line-height: 1.45;
+        color: var(--ink);
+      }
+
+      /* Highlighted moments inside the transcript */
+      .ft-msg.moment-good {
+        border-left-color: var(--good);
+        background: #e9f5f2;
+      }
+      .ft-msg.moment-warn {
+        border-left-color: var(--warn);
+        background: #fbeede;
+      }
+      .ft-msg.moment-retry {
+        border-left-color: var(--accent);
+        background: #fde6da;
+      }
+
+      .ft-moment {
+        margin-top: 4px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(31, 42, 54, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .ft-moment-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .moment-good   .ft-moment-label { color: var(--good); }
+      .moment-warn   .ft-moment-label { color: var(--warn); }
+      .moment-retry  .ft-moment-label { color: var(--accent); }
+
+      .ft-moment-note {
+        font-size: 0.84rem;
+        line-height: 1.4;
+        color: var(--ink);
+      }
+
+      .ft-jump-btn {
+        align-self: flex-start;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 5px 10px;
+        font: 600 0.78rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .ft-jump-btn:hover {
+        background: #e85c25;
+      }
+
+      .helper-banner {
+        background: #fff6e6;
+        border: 1px solid #f3dca6;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-size: 0.86rem;
+        color: #7f6b44;
+      }
+
+      .error-banner {
+        background: #fdecea;
+        border: 1px solid #f5b7b1;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-size: 0.86rem;
+        color: #922b21;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .feedback-block h3 {
+        margin: 0 0 8px;
+        font: 700 1rem/1.2 "Space Grotesk", sans-serif;
+      }
+
+      .feedback-block p {
+        margin: 0 0 10px;
+        line-height: 1.4;
+      }
+
+      .feedback-loading {
+        text-align: center;
+        color: var(--muted);
+        padding: 24px 0;
+      }
+
+      .skill-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 4px 0 18px;
+      }
+
+      .skill-pill-btn {
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+        color: #5e6b78;
+        padding: 8px 15px;
+        border-radius: 999px;
+        font: 600 0.85rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+        transition: all 120ms ease;
+      }
+
+      .skill-pill-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .skill-pill-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.18);
+      }
+
+      .retry-option {
+        display: block;
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 120ms ease;
+      }
+
+      .retry-option:hover {
+        border-color: var(--accent);
+        background: #fff;
+        transform: translateY(-1px);
+      }
+
+      .retry-option-title {
+        font: 700 1rem/1.2 "Space Grotesk", sans-serif;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+
+      .retry-option-meta {
+        color: var(--muted);
+        font-size: 0.88rem;
+        margin-bottom: 4px;
+      }
+
+      .retry-option-note {
+        color: var(--accent);
+        font-size: 0.82rem;
+        font-style: italic;
+      }
+
+      .retry-banner {
+        background: #fff6e6;
+        border: 1px solid var(--accent);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.88rem;
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .moment-retry-btn {
+        display: inline-block;
+        margin-top: 9px;
+        background: #fff;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+        padding: 5px 12px;
+        border-radius: 999px;
+        font: 600 0.78rem/1 "IBM Plex Sans", sans-serif;
+        cursor: pointer;
+      }
+
+      .moment-retry-btn:hover {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .pass-banner {
+        background: linear-gradient(135deg, #e7f6f3, #d3edd9);
+        border: 1px solid #8cc9b6;
+        border-radius: 14px;
+        padding: 18px 22px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .pass-banner-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--good);
+        color: #fff;
+        font: 700 1.6rem/44px "Space Grotesk", sans-serif;
+        text-align: center;
+      }
+
+      .pass-banner-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .pass-banner-title {
+        font: 700 1.15rem/1.2 "Space Grotesk", sans-serif;
+        color: #1f5a48;
+      }
+
+      .pass-banner-sub {
+        color: #2f6e5a;
+        font-size: 0.9rem;
+      }
+
+      .needs-work-banner {
+        background: linear-gradient(135deg, #fff0e4, #ffe2d0);
+        border: 1px solid #f5caa8;
+        border-radius: 14px;
+        padding: 14px 18px;
+        margin-bottom: 14px;
+        color: #7a3a14;
+        font-size: 0.92rem;
+      }
+
+      .stretch-block {
+        background: #fff;
+        border: 1px dashed var(--good);
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-top: 10px;
+      }
+
+      .stretch-block strong {
+        color: #1f5a48;
+      }
+
+      @media (max-width: 840px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .filter-grid {
+          grid-template-columns: 1fr;
+        }
+        .advanced-grid {
+          grid-template-columns: 1fr;
+        }
+        .journey {
+          grid-template-columns: repeat(4, minmax(70px, 1fr));
+        }
+        .row {
+          grid-template-columns: 1fr;
+          gap: 3px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="header">
+        <div>
+          <h1 class="title">SpeakEasy Coach</h1>
+          <p class="subtitle">Practice real-world conversations and get supportive coaching.</p>
+        </div>
+        <button class="btn-ghost" id="restartTop">Restart</button>
+      </header>
+
+      <nav class="journey" id="journey">
+        <div class="step" data-step="home">1. Home</div>
+        <div class="step" data-step="setup">2. Setup</div>
+        <div class="step" data-step="call">3. Call</div>
+        <div class="step" data-step="transition">4. Analyze</div>
+        <div class="step" data-step="feedback">5. Feedback</div>
+        <div class="step" data-step="retry">6. Retry</div>
+        <div class="step" data-step="progress">7. Progress</div>
+      </nav>
+
+      <main class="card">
+        <section class="screen active" id="home">
+          <h2>Choose A Practice Scenario</h2>
+          <p class="small">Pick a real-world conversation to rehearse. Filter by the skill you want to practice.</p>
+          <div class="skill-pills" id="skillPills"></div>
+          <div id="scenarioGroups"></div>
+          <p class="empty-state" id="emptyState">No scenarios match this filter.</p>
+        </section>
+
+        <section class="screen" id="setup">
+          <h2>Scenario Setup</h2>
+          <p class="small">Light context before starting the conversation.</p>
+          <div class="config">
+            <div class="row">
+              <div class="label">Scenario</div>
+              <div class="value" id="setupScenario">—</div>
+            </div>
+            <div class="row">
+              <div class="label">Role</div>
+              <div class="value" id="setupRole">—</div>
+            </div>
+            <div class="row">
+              <div class="label">Goal</div>
+              <div class="value" id="setupGoal">—</div>
+            </div>
+            <div class="row">
+              <div class="label">Partner Personality</div>
+              <div class="value" id="setupPartner">—</div>
+            </div>
+            <div class="row">
+              <div class="label">Difficulty</div>
+              <div class="value" id="setupDifficulty">—</div>
+            </div>
+            <div class="row">
+              <div class="label">Focus Skill</div>
+              <div class="value" id="setupSkill">—</div>
+            </div>
+          </div>
+          <div class="breath-card" id="breathCard">
+            <div class="breath-title">Take a breath before you start</div>
+            <div class="breath-circle contract" id="breathCircle">Inhale</div>
+            <div class="breath-sub" id="breathSub">Follow the circle</div>
+            <button class="breath-skip" id="breathSkip">Skip</button>
+          </div>
+          <div class="controls">
+            <button class="btn-ghost" data-go="home">Back</button>
+            <button class="btn-primary" id="startConversation">Start Conversation</button>
+          </div>
+        </section>
+
+        <section class="screen" id="call">
+          <h2 id="callHeading">Live Conversation</h2>
+          <p class="small" id="callSubheading">Type your responses. The partner will reply in character.</p>
+          <div class="chat-stage">
+            <div class="chat-header">
+              <div class="orb-small" id="callOrb"></div>
+              <div class="chat-header-meta">
+                <strong id="callScenarioTitle">Scenario</strong>
+                <span id="callScenarioMeta">Partner ready</span>
+              </div>
+            </div>
+            <div class="retry-banner" id="retryBanner" style="display:none"></div>
+            <div class="helper-banner" id="helperBanner" style="display:none"></div>
+            <div class="error-banner" id="callError" style="display:none"></div>
+            <div class="chat-log" id="chatLog"></div>
+
+            <!-- Text mode (default for most scenarios) -->
+            <div class="chat-input-row" id="textInputRow">
+              <input type="text" id="chatInput" placeholder="Type your response and press Enter..." autocomplete="off" />
+              <button class="btn-primary" id="chatSend">Send</button>
+            </div>
+
+            <!-- Voice mode (used when scenario.voice_enabled) -->
+            <div class="voice-stage" id="voiceStage" style="display:none">
+              <div class="orb-call dialing" id="voiceOrb"></div>
+              <div class="voice-status" id="voiceStatus">Connecting…</div>
+              <button class="ptt-button" id="pttButton" disabled>
+                <span class="ptt-mic">🎙️</span>
+                <span id="pttLabel">Hold to speak</span>
+              </button>
+              <div class="voice-hint">Tip: spacebar also works as push-to-talk</div>
+              <div class="live-score" id="liveScore" style="display:none">
+                <div class="live-score-label">How it's going right now</div>
+                <div class="live-score-track">
+                  <div class="live-score-thumb" id="liveScoreThumb">😐</div>
+                </div>
+                <div class="live-score-ends">
+                  <span>😰 Struggling</span>
+                  <span>😊 Steady</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="btn-ghost" id="helperBtn">I Don't Know What To Say</button>
+            <button class="btn-primary" id="endConversation">End Conversation</button>
+          </div>
+        </section>
+
+        <section class="screen" id="transition">
+          <h2>Analyzing Your Conversation...</h2>
+          <p class="small">Finding strengths, growth points, and better phrasing options.</p>
+          <div class="call-stage">
+            <div>
+              <div class="orb" style="background: radial-gradient(circle at 32% 30%, #ffc88a, #ff6b35); box-shadow: 0 8px 22px rgba(255, 107, 53, 0.35);"></div>
+              <div class="assistant-line" id="transitionStatus">Tutor is preparing feedback...</div>
+            </div>
+          </div>
+          <div class="error-banner" id="transitionError" style="display:none; margin-top:14px"></div>
+          <div class="controls">
+            <button class="btn-ghost" data-go="call">Back To Conversation</button>
+          </div>
+        </section>
+
+        <section class="screen" id="feedback">
+          <h2>Supportive Coaching</h2>
+          <p class="small">Strengths first, then 1-2 focused improvements.</p>
+          <div id="feedbackBody">
+            <p class="feedback-loading">No feedback yet.</p>
+          </div>
+          <div class="controls">
+            <button class="btn-secondary" id="openRetry">Retry Options</button>
+            <button class="btn-primary" data-go="progress">Continue</button>
+          </div>
+        </section>
+
+        <section class="screen" id="retry">
+          <h2>Immediate Retry</h2>
+          <p class="small">Practice again now while feedback is fresh. Pick a starting point.</p>
+          <div id="retryOptions"></div>
+          <div class="controls">
+            <button class="btn-ghost" data-go="feedback">Back To Feedback</button>
+            <button class="btn-primary" data-go="progress">Skip To Progress</button>
+          </div>
+        </section>
+
+        <section class="screen" id="progress">
+          <h2>Growth Snapshot</h2>
+          <p class="small">Progress is framed as confidence-building, not grading.</p>
+          <div class="timeline">
+            <div class="metric">
+              <div>Clarity <strong>+12%</strong></div>
+              <div class="bar"><span style="width: 74%"></span></div>
+            </div>
+            <div class="metric">
+              <div>Engagement <strong>+8%</strong></div>
+              <div class="bar"><span style="width: 62%"></span></div>
+            </div>
+            <div class="metric">
+              <div>Assertiveness <strong>+15%</strong></div>
+              <div class="bar"><span style="width: 67%"></span></div>
+            </div>
+            <p><strong>This week you improved in:</strong> asking direct follow-up questions and reducing over-apologizing.</p>
+          </div>
+          <div class="controls">
+            <button class="btn-primary" data-go="home">Practice Another Scenario</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const order = ["home", "setup", "call", "transition", "feedback", "retry", "progress"];
+      const screens = [...document.querySelectorAll(".screen")];
+      const steps = [...document.querySelectorAll(".step")];
+
+      const skillPillsContainer = document.getElementById("skillPills");
+      const scenarioGroups = document.getElementById("scenarioGroups");
+      const emptyState = document.getElementById("emptyState");
+
+      const setupScenario = document.getElementById("setupScenario");
+      const setupRole = document.getElementById("setupRole");
+      const setupGoal = document.getElementById("setupGoal");
+      const setupPartner = document.getElementById("setupPartner");
+      const setupDifficulty = document.getElementById("setupDifficulty");
+      const setupSkill = document.getElementById("setupSkill");
+
+      const callHeading = document.getElementById("callHeading");
+      const callSubheading = document.getElementById("callSubheading");
+      const callScenarioTitle = document.getElementById("callScenarioTitle");
+      const callScenarioMeta = document.getElementById("callScenarioMeta");
+      const callOrb = document.getElementById("callOrb");
+      const chatLog = document.getElementById("chatLog");
+      const chatInput = document.getElementById("chatInput");
+      const chatSend = document.getElementById("chatSend");
+      const textInputRow = document.getElementById("textInputRow");
+      const voiceStage = document.getElementById("voiceStage");
+      const voiceOrb = document.getElementById("voiceOrb");
+      const voiceStatus = document.getElementById("voiceStatus");
+      const pttButton = document.getElementById("pttButton");
+      const pttLabel = document.getElementById("pttLabel");
+      const liveScore = document.getElementById("liveScore");
+      const liveScoreThumb = document.getElementById("liveScoreThumb");
+      const breathCard = document.getElementById("breathCard");
+      const breathCircle = document.getElementById("breathCircle");
+      const breathSub = document.getElementById("breathSub");
+      const breathSkipBtn = document.getElementById("breathSkip");
+      const retryBanner = document.getElementById("retryBanner");
+      const helperBanner = document.getElementById("helperBanner");
+      const callError = document.getElementById("callError");
+      const helperBtn = document.getElementById("helperBtn");
+      const endConversation = document.getElementById("endConversation");
+      const startConversationBtn = document.getElementById("startConversation");
+
+      const transitionStatus = document.getElementById("transitionStatus");
+      const transitionError = document.getElementById("transitionError");
+      const feedbackBody = document.getElementById("feedbackBody");
+      const retryOptionsContainer = document.getElementById("retryOptions");
+      const openRetryBtn = document.getElementById("openRetry");
+
+      const SKILL_LABELS = {
+        "opening-lines": "Opening Lines",
+        "active-listening": "Active Listening",
+        "engagement": "Engagement",
+        "clarity": "Clarity",
+        "assertiveness": "Assertiveness",
+        "confidence-signals": "Confidence",
+        "boundary-setting": "Boundaries",
+        "structured-answering": "Structured Answers",
+        "handling-pressure": "Handling Pressure",
+        "recovery": "Recovery",
+        "emotional-regulation": "Emotional Regulation",
+      };
+
+      let scenarios = [];
+      let scenariosById = {};
+      let currentScenario = null;
+      let messages = [];
+      let currentFeedback = null;
+      let retryMode = "first_attempt";
+      let selectedRetryMoment = null;
+      let isPartnerThinking = false;
+      let activeSkillFilter = "all";
+      // Set by startRetry when a voice retry needs the new session to resume
+      // mid-conversation; consumed (and cleared) by voiceCall.start().
+      let voiceRetryContext = null;
+
+      function showScreen(id) {
+        screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
+        steps.forEach((step) => step.classList.toggle("active", step.dataset.step === id));
+      }
+
+      function titleCase(value) {
+        if (!value) return "";
+        return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+
+      function formatSkill(skill) {
+        return skill.split("-").map((part) => titleCase(part)).join(" ");
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? "").replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        })[c]);
+      }
+
+      async function loadScenarios() {
+        try {
+          const res = await fetch("/api/scenarios");
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          scenarios = await res.json();
+          scenariosById = Object.fromEntries(scenarios.map((s) => [s.id, s]));
+          renderSkillPills();
+          renderScenarios();
+        } catch (err) {
+          scenarioGroups.innerHTML =
+            `<p class="error-banner">Could not load scenarios: ${escapeHtml(err.message)}</p>`;
+        }
+      }
+
+      function getAvailableSkills() {
+        // Skills that show up in at least 2 scenarios — keeps the pill row tight.
+        const counts = {};
+        scenarios.forEach((s) => s.skills.forEach((skill) => {
+          counts[skill] = (counts[skill] || 0) + 1;
+        }));
+        return Object.entries(counts)
+          .filter(([, c]) => c >= 2)
+          .sort((a, b) => b[1] - a[1])
+          .map(([skill]) => skill);
+      }
+
+      function renderSkillPills() {
+        skillPillsContainer.innerHTML = "";
+        const pills = [{ id: "all", label: "All Scenarios" }];
+        getAvailableSkills().forEach((skill) => {
+          pills.push({ id: skill, label: SKILL_LABELS[skill] || formatSkill(skill) });
+        });
+        pills.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `skill-pill-btn ${activeSkillFilter === p.id ? "active" : ""}`;
+          btn.textContent = p.label;
+          btn.addEventListener("click", () => {
+            activeSkillFilter = p.id;
+            renderSkillPills();
+            renderScenarios();
+          });
+          skillPillsContainer.appendChild(btn);
+        });
+      }
+
+      function renderScenarios() {
+        const visible = scenarios.filter((s) => {
+          if (activeSkillFilter === "all") return true;
+          return s.skills.includes(activeSkillFilter);
+        });
+
+        scenarioGroups.innerHTML = "";
+        if (visible.length === 0) {
+          emptyState.style.display = "block";
+          return;
+        }
+        emptyState.style.display = "none";
+
+        const grid = document.createElement("div");
+        grid.className = "grid-2";
+        visible.forEach((s) => {
+          const card = document.createElement("article");
+          card.className = "scenario";
+          const skillPills = s.skills.slice(0, 2)
+            .map((sk) => `<span class="pill">${escapeHtml(SKILL_LABELS[sk] || formatSkill(sk))}</span>`)
+            .join("");
+          card.innerHTML = `
+            <h3>${escapeHtml(s.title)}</h3>
+            <span class="pill">${escapeHtml(titleCase(s.difficulty))}</span>
+            ${skillPills}
+            <p class="focus">${escapeHtml(s.focus_text)}</p>
+            <div class="controls">
+              <button class="btn-primary">Practice This</button>
+            </div>
+          `;
+          card.querySelector("button").addEventListener("click", () => selectScenario(s.id));
+          grid.appendChild(card);
+        });
+        scenarioGroups.appendChild(grid);
+      }
+
+      function selectScenario(id) {
+        currentScenario = scenariosById[id];
+        if (!currentScenario) return;
+        messages = [];
+        currentFeedback = null;
+        setupScenario.textContent = currentScenario.title;
+        setupRole.textContent = currentScenario.role;
+        setupGoal.textContent = currentScenario.goal;
+        setupPartner.textContent = titleCase(currentScenario.partner_personality);
+        setupDifficulty.textContent = titleCase(currentScenario.difficulty);
+        setupSkill.textContent = currentScenario.skills.slice(0, 2).map(formatSkill).join(" + ");
+        // Reset and start the breathing exercise for this fresh setup view.
+        breathCard.style.display = "flex";
+        breathing.start();
+        showScreen("setup");
+      }
+
+      function partnerOpeningLine(scenario) {
+        return scenario.partner_opening || "Hi, what can I help you with today?";
+      }
+
+      function startConversation() {
+        if (!currentScenario) return;
+        breathing.stop();
+        // In voice mode the AI will *speak* the opening line and we'll capture
+        // it via the transcript, so we start with an empty message log.
+        messages = currentScenario.voice_enabled
+          ? []
+          : [{ role: "partner", text: partnerOpeningLine(currentScenario) }];
+        currentFeedback = null;
+        retryMode = "first_attempt";
+        selectedRetryMoment = null;
+        enterCallScreen();
+      }
+
+      function startRetry(label) {
+        if (!currentScenario) return;
+        voiceRetryContext = null;
+        if (!label) {
+          // Replay from the start with a fresh opening line.
+          messages = currentScenario.voice_enabled
+            ? []
+            : [{ role: "partner", text: partnerOpeningLine(currentScenario) }];
+          retryMode = "full_retry";
+          selectedRetryMoment = null;
+        } else {
+          // Truncate the message history to just before the flagged turn so the
+          // user can retype it with the prior context preserved.
+          const match = String(label).match(/^T(\d+)$/i);
+          const idx = match ? parseInt(match[1], 10) - 1 : -1;
+          if (idx < 0 || idx >= messages.length) {
+            messages = currentScenario.voice_enabled
+              ? []
+              : [{ role: "partner", text: partnerOpeningLine(currentScenario) }];
+            retryMode = "full_retry";
+            selectedRetryMoment = null;
+          } else {
+            const flagged = messages[idx];
+            // If the flagged turn is the user's, drop it (and everything after) so
+            // the next thing typed is the improved version. If somehow it's a partner
+            // turn, keep it so the user can respond to it.
+            messages = messages.slice(0, flagged.role === "user" ? idx : idx + 1);
+            retryMode = "moment_retry";
+            selectedRetryMoment = label;
+
+            // Voice retry: extract the trailing partner line so the new
+            // realtime session can replay it (and the AI has the prior
+            // conversation as context). The line is removed from `messages`
+            // because the AI will re-speak it and the transcript event will
+            // re-add it — preventing a duplicate.
+            if (currentScenario.voice_enabled && messages.length > 0) {
+              const last = messages[messages.length - 1];
+              if (last && last.role === "partner" && (last.text || "").trim()) {
+                const replayLine = last.text;
+                messages = messages.slice(0, -1);
+                voiceRetryContext = {
+                  prior_messages: messages.slice(),
+                  replay_partner_line: replayLine,
+                };
+              }
+            }
+          }
+        }
+        enterCallScreen();
+      }
+
+      function enterCallScreen() {
+        callScenarioTitle.textContent = currentScenario.title;
+        callScenarioMeta.textContent =
+          `${titleCase(currentScenario.partner_personality)} · ${titleCase(currentScenario.difficulty)}`;
+        helperBanner.style.display = "none";
+        callError.style.display = "none";
+        if (retryMode === "moment_retry") {
+          retryBanner.textContent = "Retry mode: type an improved version of your last response and continue from here.";
+          retryBanner.style.display = "block";
+        } else if (retryMode === "full_retry") {
+          retryBanner.textContent = "Retry mode: replaying the conversation from the start.";
+          retryBanner.style.display = "block";
+        } else {
+          retryBanner.style.display = "none";
+        }
+        renderChat();
+        showScreen("call");
+
+        const isVoice = !!currentScenario.voice_enabled;
+        if (isVoice) {
+          // Voice mode: hide text input AND the live transcript, show voice
+          // stage, start the call. The transcript is still built internally
+          // (we need it for the tutor) and will be revealed on the feedback
+          // screen — we just don't want it distracting the user mid-call.
+          textInputRow.style.display = "none";
+          chatLog.style.display = "none";
+          voiceStage.style.display = "flex";
+          helperBtn.style.display = "none";
+          callHeading.textContent = "Live Call";
+          callSubheading.textContent =
+            "Hold the button (or spacebar) to speak. Release when you're done.";
+          voiceCall.start();
+        } else {
+          // Text mode: existing behaviour.
+          textInputRow.style.display = "flex";
+          chatLog.style.display = "";
+          voiceStage.style.display = "none";
+          helperBtn.style.display = "";
+          callHeading.textContent = "Live Conversation";
+          callSubheading.textContent =
+            "Type your responses. The partner will reply in character.";
+          chatInput.focus();
+        }
+      }
+
+      // ── Voice call client (WebRTC → OpenAI Realtime) ──────────────
+      // Token is minted server-side via /api/realtime/token; the browser
+      // never sees the real OpenAI key. SDP is exchanged with
+      // api.openai.com using the short-lived ephemeral token.
+      const voiceCall = (() => {
+        let pc = null;
+        let dc = null;
+        let audioEl = null;
+        let micTrack = null;
+        let active = false;
+        let pttActive = false;
+        let liveAiText = "";
+        let liveAiMessageIdx = -1;
+        let pendingUserIdx = -1;
+        let model = "gpt-4o-realtime-preview-2024-12-17";
+
+        function setStatus(text, live = false) {
+          voiceStatus.textContent = text;
+          voiceStatus.classList.toggle("live", live);
+        }
+
+        function setOrb(state) {
+          voiceOrb.classList.remove("dialing", "speaking", "listening");
+          if (state) voiceOrb.classList.add(state);
+        }
+
+        function appendMessage(role, text) {
+          messages.push({ role, text });
+          renderChat();
+          return messages.length - 1;
+        }
+
+        function updateMessage(idx, text) {
+          if (idx < 0 || idx >= messages.length) return;
+          messages[idx].text = text;
+          renderChat();
+        }
+
+        async function start() {
+          cleanup(); // safety: tear down anything stale
+          active = true;
+          setStatus("Connecting…");
+          setOrb("dialing");
+          pttButton.disabled = true;
+          pttLabel.textContent = "Connecting…";
+
+          // Consume the one-shot retry context (if a moment-retry was just
+          // started). The backend will use it to bake the prior conversation
+          // into the system prompt and have the AI replay its last line.
+          const retryCtx = voiceRetryContext;
+          voiceRetryContext = null;
+
+          let session;
+          try {
+            const body = { scenario_id: currentScenario.id };
+            if (retryCtx) {
+              body.prior_messages = retryCtx.prior_messages;
+              body.replay_partner_line = retryCtx.replay_partner_line;
+            }
+            const res = await fetch("/api/realtime/token", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+            if (!res.ok) {
+              const detail = await res.json().catch(() => ({}));
+              throw new Error(detail.detail || `HTTP ${res.status}`);
+            }
+            session = await res.json();
+          } catch (err) {
+            failWith(`Could not start call: ${err.message}`);
+            return;
+          }
+
+          model = session.model || model;
+          const ephemeral = session.client_secret;
+          const language = session.language || "en";
+
+          try {
+            pc = new RTCPeerConnection();
+            audioEl = document.createElement("audio");
+            audioEl.autoplay = true;
+            pc.ontrack = (e) => { audioEl.srcObject = e.streams[0]; };
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+              audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+              },
+            });
+            micTrack = stream.getAudioTracks()[0];
+            micTrack.enabled = false; // PTT: off by default
+            pc.addTrack(micTrack, stream);
+
+            dc = pc.createDataChannel("oai-events");
+            dc.onopen = () => {
+              dc.send(JSON.stringify({
+                type: "session.update",
+                session: {
+                  turn_detection: null, // PTT, no auto VAD
+                  input_audio_transcription: { model: "whisper-1", language },
+                },
+              }));
+              dc.send(JSON.stringify({ type: "response.create" }));
+            };
+            dc.onmessage = (e) => handleEvent(JSON.parse(e.data));
+
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+
+            const sdpRes = await fetch(
+              `https://api.openai.com/v1/realtime?model=${encodeURIComponent(model)}`,
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${ephemeral}`,
+                  "Content-Type": "application/sdp",
+                },
+                body: offer.sdp,
+              },
+            );
+            if (!sdpRes.ok) {
+              const text = await sdpRes.text();
+              throw new Error(`SDP exchange ${sdpRes.status}: ${text.slice(0, 200)}`);
+            }
+            await pc.setRemoteDescription({
+              type: "answer",
+              sdp: await sdpRes.text(),
+            });
+
+            setStatus("Connected — partner is speaking…");
+            pttButton.disabled = false;
+            pttLabel.textContent = "Hold to speak";
+          } catch (err) {
+            failWith(`Could not establish call: ${err.message}`);
+          }
+        }
+
+        function failWith(msg) {
+          callError.textContent = msg;
+          callError.style.display = "block";
+          setStatus("Call failed");
+          setOrb(null);
+          pttButton.disabled = true;
+          pttLabel.textContent = "Unavailable";
+          cleanup();
+        }
+
+        function handleEvent(ev) {
+          if (ev.type === "response.audio.delta") {
+            setOrb("speaking");
+            setStatus("Partner is speaking…");
+          }
+          if (ev.type === "response.audio.done") {
+            setOrb(null);
+            setStatus("Your turn — hold the button to reply");
+          }
+          if (ev.type === "response.audio_transcript.delta") {
+            liveAiText += ev.delta || "";
+            if (liveAiMessageIdx === -1) {
+              liveAiMessageIdx = appendMessage("partner", liveAiText);
+            } else {
+              updateMessage(liveAiMessageIdx, liveAiText);
+            }
+          }
+          if (ev.type === "response.audio_transcript.done") {
+            if (liveAiMessageIdx !== -1) {
+              updateMessage(liveAiMessageIdx, ev.transcript || liveAiText);
+            }
+            liveAiText = "";
+            liveAiMessageIdx = -1;
+          }
+          if (ev.type === "conversation.item.input_audio_transcription.completed") {
+            const text = (ev.transcript || "").trim();
+            if (!text) return;
+            if (pendingUserIdx !== -1) {
+              updateMessage(pendingUserIdx, text);
+              pendingUserIdx = -1;
+            } else {
+              appendMessage("user", text);
+            }
+            // Trigger a live coaching score update after each user turn.
+            scheduleLiveScore();
+          }
+          if (ev.type === "error") {
+            console.error("Realtime error:", ev);
+            callError.textContent = `Realtime: ${ev.error?.message || "unknown error"}`;
+            callError.style.display = "block";
+          }
+        }
+
+        function pttDown(e) {
+          if (e) e.preventDefault();
+          if (!active || !micTrack || pttActive || pttButton.disabled) return;
+          pttActive = true;
+          micTrack.enabled = true;
+          if (dc?.readyState === "open") {
+            dc.send(JSON.stringify({ type: "input_audio_buffer.clear" }));
+          }
+          pttButton.classList.add("pressed");
+          pttLabel.textContent = "Release when done";
+          setOrb("listening");
+          setStatus("Listening…", true);
+        }
+
+        function pttUp(e) {
+          if (e) e.preventDefault();
+          if (!active || !micTrack || !pttActive) return;
+          pttActive = false;
+          micTrack.enabled = false;
+          if (dc?.readyState === "open") {
+            dc.send(JSON.stringify({ type: "input_audio_buffer.commit" }));
+            dc.send(JSON.stringify({ type: "response.create" }));
+          }
+          pttButton.classList.remove("pressed");
+          pttLabel.textContent = "Hold to speak";
+          setOrb(null);
+          setStatus("Sent — waiting for partner…");
+          pendingUserIdx = appendMessage("user", "…");
+        }
+
+        // ── Live coaching score ──
+        // After each user turn, debounced 1.2s, ask the backend to score how the
+        // student is doing right now. Animates the slider in place.
+        let liveScoreTimer = null;
+        const FEEL_EMOJIS = ["😰", "😟", "😐", "🙂", "😊"];
+
+        function scheduleLiveScore() {
+          if (!active) return;
+          // Show the slider on the first user turn.
+          if (liveScore.style.display === "none") {
+            liveScore.style.display = "flex";
+            setLiveScore(0.5); // start centered
+          }
+          clearTimeout(liveScoreTimer);
+          liveScoreTimer = setTimeout(fetchLiveScore, 1200);
+        }
+
+        async function fetchLiveScore() {
+          if (!active) return;
+          const usable = messages.filter(
+            (m) => (m.text || "").trim() && m.text.trim() !== "…",
+          );
+          if (usable.filter((m) => m.role === "user").length === 0) return;
+          try {
+            const res = await fetch("/api/live_score", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                scenario_id: currentScenario.id,
+                messages: usable,
+              }),
+            });
+            if (!res.ok) return; // fail silently — live score isn't critical
+            const data = await res.json();
+            if (typeof data.score === "number") setLiveScore(data.score);
+          } catch (_) {
+            // swallow — never let the live score break the call
+          }
+        }
+
+        function setLiveScore(v) {
+          const val = Math.max(0, Math.min(1, v));
+          const pct = val * 100;
+          const idx = Math.min(4, Math.floor(val * 5));
+          liveScoreThumb.style.left = `${pct}%`;
+          liveScoreThumb.textContent = FEEL_EMOJIS[idx];
+        }
+
+        function cleanup() {
+          active = false;
+          pttActive = false;
+          clearTimeout(liveScoreTimer);
+          liveScoreTimer = null;
+          try { if (dc) dc.close(); } catch (_) {}
+          try { if (pc) pc.close(); } catch (_) {}
+          if (audioEl) { audioEl.srcObject = null; audioEl = null; }
+          if (micTrack) { micTrack.enabled = false; micTrack = null; }
+          dc = null;
+          pc = null;
+          liveAiText = "";
+          liveAiMessageIdx = -1;
+          pendingUserIdx = -1;
+          // Hide and reset the live score for the next call.
+          liveScore.style.display = "none";
+          liveScoreThumb.style.transition = "none";
+          setLiveScore(0.5);
+          // Restore transition after a tick so the next call animates again.
+          requestAnimationFrame(() => {
+            liveScoreThumb.style.transition = "";
+          });
+        }
+
+        return { start, pttDown, pttUp, cleanup, isActive: () => active };
+      })();
+
+      // ── Breathing exercise (setup screen) ──────────────────────────
+      // 4-4-4 box breathing animation. Runs while #setup is visible, stops
+      // automatically when navigating away. Pure presentation, no backend.
+      const breathing = (() => {
+        let timer = null;
+        let active = false;
+        const PHASE_MS = 4000;
+        const phases = [
+          { label: "Inhale", cls: "expand" },
+          { label: "Hold",   cls: "expand" },
+          { label: "Exhale", cls: "contract" },
+          { label: "Hold",   cls: "contract" },
+        ];
+
+        function step(i) {
+          if (!active) return;
+          const p = phases[i % phases.length];
+          breathCircle.textContent = p.label;
+          breathCircle.classList.remove("expand", "contract");
+          // Force reflow so the transition restarts even when re-applying same class.
+          void breathCircle.offsetWidth;
+          breathCircle.classList.add(p.cls);
+          breathSub.textContent = "4 seconds";
+          timer = setTimeout(() => step(i + 1), PHASE_MS);
+        }
+
+        function start() {
+          stop();
+          if (breathCard.style.display === "none") return;
+          active = true;
+          step(0);
+        }
+
+        function stop() {
+          active = false;
+          if (timer) { clearTimeout(timer); timer = null; }
+        }
+
+        function skip() {
+          stop();
+          breathCard.style.display = "none";
+        }
+
+        return { start, stop, skip };
+      })();
+
+      function renderRetryOptions() {
+        retryOptionsContainer.innerHTML = "";
+
+        const fullCard = document.createElement("button");
+        fullCard.type = "button";
+        fullCard.className = "retry-option";
+        fullCard.innerHTML = `
+          <div class="retry-option-title">Replay From The Start</div>
+          <div class="retry-option-meta">Restart this scenario fresh and try the whole conversation again.</div>
+        `;
+        fullCard.addEventListener("click", () => startRetry(null));
+        retryOptionsContainer.appendChild(fullCard);
+
+        const moments = (currentFeedback && Array.isArray(currentFeedback.highlighted_moments))
+          ? currentFeedback.highlighted_moments
+          : [];
+        const retryMoments = moments
+          .filter((m) => m.type === "retry")
+          .map((m) => ({ moment: m, msg: lookupMomentMessage(m.timestamp_or_label) }))
+          .filter((m) => m.msg);
+
+        if (retryMoments.length === 0) {
+          const note = document.createElement("p");
+          note.className = "compact-note";
+          note.style.marginTop = "8px";
+          note.textContent = "No specific moments were flagged for retry — the full replay is your best option.";
+          retryOptionsContainer.appendChild(note);
+          return;
+        }
+
+        retryMoments.forEach(({ moment, msg }) => {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "retry-option";
+          const speaker = msg.role === "user" ? "You said" : "Partner said";
+          card.innerHTML = `
+            <div class="retry-option-title">Retry From This Moment</div>
+            <div class="retry-option-meta">${speaker}: "${escapeHtml(truncateText(msg.text, 110))}"</div>
+            <div class="retry-option-note">${escapeHtml(moment.note || "")}</div>
+          `;
+          card.addEventListener("click", () => startRetry(moment.timestamp_or_label));
+          retryOptionsContainer.appendChild(card);
+        });
+      }
+
+      function renderChat() {
+        chatLog.innerHTML = "";
+        if (messages.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "chat-empty";
+          empty.textContent = "Conversation will appear here.";
+          chatLog.appendChild(empty);
+          return;
+        }
+        messages.forEach((m) => {
+          const div = document.createElement("div");
+          div.className = `chat-msg ${m.role}`;
+          div.textContent = m.text;
+          chatLog.appendChild(div);
+        });
+        if (isPartnerThinking) {
+          const div = document.createElement("div");
+          div.className = "chat-msg thinking";
+          div.textContent = "Partner is typing...";
+          chatLog.appendChild(div);
+        }
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      async function sendUserMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isPartnerThinking) return;
+        chatInput.value = "";
+        callError.style.display = "none";
+        messages.push({ role: "user", text });
+        isPartnerThinking = true;
+        callOrb.classList.add("thinking");
+        chatSend.disabled = true;
+        renderChat();
+        try {
+          const res = await fetch("/api/partner_reply", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              scenario_id: currentScenario.id,
+              partner_personality: currentScenario.partner_personality,
+              messages: messages,
+            }),
+          });
+          if (!res.ok) {
+            const detail = await res.json().catch(() => ({}));
+            throw new Error(detail.detail || `HTTP ${res.status}`);
+          }
+          const data = await res.json();
+          messages.push({ role: "partner", text: data.reply });
+        } catch (err) {
+          callError.textContent = `Partner reply failed: ${err.message}`;
+          callError.style.display = "block";
+        } finally {
+          isPartnerThinking = false;
+          callOrb.classList.remove("thinking");
+          chatSend.disabled = false;
+          renderChat();
+          chatInput.focus();
+        }
+      }
+
+      function showHelper() {
+        if (!currentScenario) return;
+        const skill = currentScenario.skills[0].replace(/-/g, " ");
+        helperBanner.textContent = `Try a short, direct opener focused on ${skill}.`;
+        helperBanner.style.display = "block";
+      }
+
+      async function generateFeedback() {
+        if (messages.filter((m) => m.role === "user").length === 0) {
+          transitionError.textContent = "Add at least one user message before ending.";
+          transitionError.style.display = "block";
+          return;
+        }
+        transitionError.style.display = "none";
+        transitionStatus.textContent = "Tutor is preparing feedback...";
+        showScreen("transition");
+        try {
+          const res = await fetch("/api/tutor_feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              scenario_id: currentScenario.id,
+              partner_personality: currentScenario.partner_personality,
+              difficulty: currentScenario.difficulty,
+              retry_mode: retryMode,
+              messages: messages,
+            }),
+          });
+          if (!res.ok) {
+            const detail = await res.json().catch(() => ({}));
+            throw new Error(detail.detail || `HTTP ${res.status}`);
+          }
+          currentFeedback = await res.json();
+          renderFeedback();
+          showScreen("feedback");
+        } catch (err) {
+          transitionError.textContent = `Feedback failed: ${err.message}`;
+          transitionError.style.display = "block";
+          transitionStatus.textContent = "Could not generate feedback.";
+        }
+      }
+
+      function lookupMomentMessage(label) {
+        // Tutor moments come back labeled "T01", "T02", ... matching the
+        // 1-indexed transcript we send to the backend.
+        const match = String(label || "").match(/^T(\d+)$/i);
+        if (!match) return null;
+        const idx = parseInt(match[1], 10) - 1;
+        if (idx < 0 || idx >= messages.length) return null;
+        return messages[idx];
+      }
+
+      function truncateText(text, max = 140) {
+        const t = String(text || "").trim();
+        if (t.length <= max) return t;
+        return t.slice(0, max - 1).trimEnd() + "…";
+      }
+
+      function renderMoment(m) {
+        const cls = m.type === "good" ? "good" : "warn";
+        const msg = lookupMomentMessage(m.timestamp_or_label);
+        let header;
+        if (msg) {
+          const speaker = msg.role === "user" ? "You said" : "Partner said";
+          header = `<div style="color:#5e6b78; font-size:0.82rem; margin-bottom:4px">${speaker}:</div>`
+            + `<div style="font-style:italic; margin-bottom:6px">"${escapeHtml(truncateText(msg.text))}"</div>`;
+        } else if (m.timestamp_or_label) {
+          header = `<strong>${escapeHtml(m.timestamp_or_label)}</strong> — `;
+        } else {
+          header = "";
+        }
+        const retryBtn = (m.type === "retry" && msg)
+          ? `<div><button type="button" class="moment-retry-btn" data-retry-label="${escapeHtml(m.timestamp_or_label || "")}">Retry From Here</button></div>`
+          : "";
+        return `<div class="moment ${cls}">${header}${escapeHtml(m.note || "")}${retryBtn}</div>`;
+      }
+
+      // Group highlighted_moments by message-index so each transcript row can
+      // render the moments that target it inline.
+      function indexMomentsByMessage() {
+        const byIdx = new Map(); // idx → [moment, ...]
+        const moments = currentFeedback?.highlighted_moments;
+        if (!Array.isArray(moments)) return byIdx;
+        moments.forEach((m) => {
+          const match = String(m.timestamp_or_label || "").match(/^T(\d+)$/i);
+          if (!match) return;
+          const idx = parseInt(match[1], 10) - 1;
+          if (idx < 0 || idx >= messages.length) return;
+          if (!byIdx.has(idx)) byIdx.set(idx, []);
+          byIdx.get(idx).push(m);
+        });
+        return byIdx;
+      }
+
+      function renderInlineMoment(m) {
+        const type = m.type === "good" ? "good"
+                   : m.type === "warn" ? "warn"
+                   : m.type === "retry" ? "retry"
+                   : "warn";
+        const labelText = type === "good" ? "✓ What worked"
+                        : type === "warn" ? "⚠ Watch this"
+                        : "↩ Retry from here";
+        const note = escapeHtml(m.note || "");
+        const jumpBtn = type === "retry"
+          ? `<button type="button" class="ft-jump-btn moment-retry-btn" data-retry-label="${escapeHtml(m.timestamp_or_label || "")}">Jump back to this moment</button>`
+          : "";
+        return `
+          <div class="ft-moment">
+            <span class="ft-moment-label">${labelText}</span>
+            <span class="ft-moment-note">${note}</span>
+            ${jumpBtn}
+          </div>
+        `;
+      }
+
+      function buildTranscriptHtml() {
+        const partnerLabel = currentScenario?.title
+          ? escapeHtml(currentScenario.title)
+          : "Partner";
+        const momentsByIdx = indexMomentsByMessage();
+        // Render every message slot (including filtered placeholders kept for
+        // index alignment), so moment timestamps stay accurate.
+        const rows = messages
+          .map((m, i) => {
+            const text = (m.text || "").trim();
+            if (!text || text === "…") return "";
+            const who = m.role === "user" ? "You" : partnerLabel;
+            const moments = momentsByIdx.get(i) || [];
+            // The first moment's type controls the message highlight color.
+            const highlightClass = moments.length > 0
+              ? `moment-${moments[0].type === "good" ? "good"
+                  : moments[0].type === "retry" ? "retry"
+                  : "warn"}`
+              : "";
+            const inlineMoments = moments.map(renderInlineMoment).join("");
+            return `<div class="ft-msg ${escapeHtml(m.role)} ${highlightClass}">`
+              + `<span class="who">${who}</span>`
+              + `<span class="text">${escapeHtml(m.text)}</span>`
+              + inlineMoments
+              + `</div>`;
+          })
+          .filter(Boolean)
+          .join("");
+        if (!rows) return "";
+        return `
+          <div class="feedback-transcript">
+            <div class="feedback-transcript-header">Conversation transcript</div>
+            <div class="feedback-transcript-body">${rows}</div>
+          </div>
+        `;
+      }
+
+      function renderFeedback() {
+        if (!currentFeedback) {
+          feedbackBody.innerHTML = '<p class="feedback-loading">No feedback yet.</p>';
+          return;
+        }
+        if (currentFeedback.raw_text) {
+          feedbackBody.innerHTML = `
+            <div class="error-banner">Tutor returned non-JSON output.</div>
+            <pre style="white-space:pre-wrap; font-size:0.85rem">${escapeHtml(currentFeedback.raw_text)}</pre>
+          `;
+          return;
+        }
+        const f = currentFeedback;
+        const rewrite = f.try_this_instead || {};
+        // Highlighted moments are now rendered inline inside the transcript
+        // (via buildTranscriptHtml), so we don't repeat them in the right column.
+
+        const transcriptHtml = buildTranscriptHtml();
+
+        // Pass mode = celebration. Not-passed = standard coaching layout.
+        // Both layouts: transcript on the left, coaching content on the right.
+        if (f.passed === true) {
+          feedbackBody.innerHTML = `
+            <div class="feedback-layout">
+              ${transcriptHtml}
+              <div class="feedback-content">
+                <div class="pass-banner">
+                  <div class="pass-banner-icon">✓</div>
+                  <div class="pass-banner-text">
+                    <div class="pass-banner-title">You passed this scenario.</div>
+                    <div class="pass-banner-sub">Nice work — you handled this one well.</div>
+                  </div>
+                </div>
+                <div class="timeline feedback-block">
+                  <h3>What Went Well</h3>
+                  <p>${escapeHtml(f.what_went_well || "")}</p>
+                  ${f.improve_next_time ? `
+                    <div class="stretch-block">
+                      <strong>Want to push further?</strong>
+                      <p style="margin:6px 0 0">${escapeHtml(f.improve_next_time)}</p>
+                    </div>
+                  ` : ""}
+                </div>
+                ${f.retry_prompt ? `
+                  <div class="timeline feedback-block">
+                    <p style="margin:0; color:#2f6e5a">${escapeHtml(f.retry_prompt)}</p>
+                  </div>
+                ` : ""}
+              </div>
+            </div>
+          `;
+        } else {
+          feedbackBody.innerHTML = `
+            <div class="feedback-layout">
+              ${transcriptHtml}
+              <div class="feedback-content">
+                <div class="needs-work-banner">
+                  <strong>Not quite there yet.</strong> Here's what to focus on for the next try.
+                </div>
+                <div class="timeline feedback-block">
+                  <h3>What Went Well</h3>
+                  <p>${escapeHtml(f.what_went_well || "")}</p>
+                  <h3>Improve Next Time</h3>
+                  <p>${escapeHtml(f.improve_next_time || "")}</p>
+                </div>
+                <div class="timeline feedback-block">
+                  <h3>Suggested Phrasing</h3>
+                  <p><strong>Instead of:</strong> ${escapeHtml(rewrite.instead_of || "")}</p>
+                  <p><strong>Try:</strong> ${escapeHtml(rewrite.try || "")}</p>
+                  <p><em>${escapeHtml(rewrite.why_it_works || "")}</em></p>
+                </div>
+                <div class="timeline feedback-block">
+                  <h3>Retry Prompt</h3>
+                  <p>${escapeHtml(f.retry_prompt || "")}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        feedbackBody.querySelectorAll(".moment-retry-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            startRetry(btn.dataset.retryLabel);
+          });
+        });
+      }
+
+      // ── wire up events ─────────────────────────────────────────────
+      document.querySelectorAll("[data-go]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (btn.dataset.go !== "call" && voiceCall.isActive()) {
+            voiceCall.cleanup();
+          }
+          if (btn.dataset.go !== "setup") {
+            breathing.stop();
+          }
+          showScreen(btn.dataset.go);
+        });
+      });
+
+      breathSkipBtn.addEventListener("click", () => breathing.skip());
+
+      document.getElementById("restartTop").addEventListener("click", () => {
+        if (voiceCall.isActive()) voiceCall.cleanup();
+        breathing.stop();
+        messages = [];
+        currentFeedback = null;
+        activeSkillFilter = "all";
+        renderSkillPills();
+        renderScenarios();
+        showScreen("home");
+      });
+
+      startConversationBtn.addEventListener("click", startConversation);
+      chatSend.addEventListener("click", sendUserMessage);
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendUserMessage();
+        }
+      });
+      helperBtn.addEventListener("click", showHelper);
+      endConversation.addEventListener("click", () => {
+        if (voiceCall.isActive()) voiceCall.cleanup();
+        // Drop any trailing "…" placeholder left over from a user PTT whose
+        // transcription hadn't come back yet.
+        while (messages.length > 0) {
+          const last = messages[messages.length - 1];
+          if (last.role === "user" && (!last.text || last.text.trim() === "…")) {
+            messages.pop();
+          } else {
+            break;
+          }
+        }
+        renderChat();
+        generateFeedback();
+      });
+
+      // PTT button — mouse + touch
+      pttButton.addEventListener("mousedown", voiceCall.pttDown);
+      pttButton.addEventListener("mouseup", voiceCall.pttUp);
+      pttButton.addEventListener("mouseleave", voiceCall.pttUp);
+      pttButton.addEventListener("touchstart", voiceCall.pttDown, { passive: false });
+      pttButton.addEventListener("touchend", voiceCall.pttUp, { passive: false });
+
+      // Spacebar PTT — only when call screen is active and we're not typing in a text field
+      document.addEventListener("keydown", (e) => {
+        if (e.code !== "Space" || e.repeat) return;
+        if (!document.getElementById("call").classList.contains("active")) return;
+        if (!voiceCall.isActive()) return;
+        const tag = (e.target?.tagName || "").toLowerCase();
+        if (tag === "input" || tag === "textarea") return;
+        e.preventDefault();
+        voiceCall.pttDown();
+      });
+      document.addEventListener("keyup", (e) => {
+        if (e.code !== "Space") return;
+        if (!voiceCall.isActive()) return;
+        e.preventDefault();
+        voiceCall.pttUp();
+      });
+
+      openRetryBtn.addEventListener("click", () => {
+        renderRetryOptions();
+        showScreen("retry");
+      });
+
+      steps.forEach((step) => {
+        step.addEventListener("click", () => {
+          const current = document.querySelector(".screen.active")?.id || "home";
+          const from = order.indexOf(current);
+          const to = order.indexOf(step.dataset.step);
+          if (to <= from + 1) showScreen(step.dataset.step);
+        });
+      });
+
+      loadScenarios();
+      showScreen("home");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "scenario_title": "Ask A Professor For Help",
+  "scenario_category": "assertiveness-boundary",
+  "scenario_goal": "Practice making a direct, respectful request for clarification.",
+  "scenario_objective_type": "assertiveness",
+  "primary_focus_skills": [
+    "assertiveness",
+    "clarity"
+  ],
+  "secondary_focus_skills": [
+    "tone and warmth"
+  ],
+  "difficulty": "beginner",
+  "partner_personality": "friendly",
+  "retry_mode": "first_attempt",
+  "selected_retry_moment": null,
+  "transcript": [
+    {
+      "speaker": "partner",
+      "text": "Hi, what can I help you with today?",
+      "timestamp": "00:05"
+    },
+    {
+      "speaker": "user",
+      "text": "Hi sorry, sorry to bother you... um I maybe had trouble with question 3.",
+      "timestamp": "00:14"
+    },
+    {
+      "speaker": "partner",
+      "text": "No worries. Which part of question 3?",
+      "timestamp": "00:22"
+    },
+    {
+      "speaker": "user",
+      "text": "I guess maybe the second part. If you have time maybe we can go over it.",
+      "timestamp": "00:33"
+    }
+  ]
+}

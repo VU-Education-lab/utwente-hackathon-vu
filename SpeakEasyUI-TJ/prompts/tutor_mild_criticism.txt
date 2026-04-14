@@ -1,0 +1,18 @@
+SCENARIO: Respond To Mild Criticism
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Receives the feedback without becoming defensive or making excuses
+- Acknowledges what is being said before responding to it ("Got it" / "That makes sense")
+- Asks at least one clarifying question about the specific issue
+- Stays grounded — does not collapse into self-criticism or apology either
+
+COMMON PITFALLS (look out for these):
+- Makes excuses or deflects to outside circumstances
+- Jumps straight into solutions before acknowledging the feedback
+- Gets visibly defensive or short
+- Over-apologizes and spirals into self-criticism
+- Shuts down and goes silent
+
+STRETCH (only mention if genuinely demonstrated):
+- Shows real curiosity about the feedback ("Can you say more about what you saw?")
+- Proposes a small, specific adjustment without being asked

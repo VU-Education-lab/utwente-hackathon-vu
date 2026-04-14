@@ -1,0 +1,10 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/api/*", "/models/*", "/assets/*", "*.{glb,fbx,png,jpg,svg,css,js,map}"]
+  },
+  "mimeTypes": {
+    ".glb": "model/gltf-binary",
+    ".fbx": "application/octet-stream"
+  }
+}

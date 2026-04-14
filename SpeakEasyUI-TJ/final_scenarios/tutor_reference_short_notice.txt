@@ -1,0 +1,30 @@
+SCENARIO: Reference Request On Short Notice (former internship supervisor)
+
+CORE GOAL OF THIS SCENARIO:
+The user must ask a busy person — who has no obligation to help and whom they like and respect — for a real favor with a real cost, on a tight deadline. The point is to push through the "I'm being a nuisance" reflex without collapsing the request.
+
+PASS CRITERIA (the user must demonstrate at least 3 of these to pass):
+- States the actual ask (a reference / referee / aanbevelingsbrief) clearly within the first 1-2 turns
+- Names the deadline openly instead of hiding it or hinting at it
+- Stays steady and does NOT withdraw the request when Marleen pauses, hesitates, or sounds busy
+- Tone is polite and respectful of her time without being self-erasing
+- Engages practically when she asks follow-ups (deadline, format, what she needs from them) instead of deflecting with apologies
+- Accepts a reasonable counter-offer (e.g. "kun je zelf een opzet sturen die ik aanpas?") rather than treating it as rejection
+
+COMMON PITFALLS (look out for these):
+- Over-apologizing: stacking "sorry"s, "ik weet dat het heel veel gevraagd is", "echt heel vervelend dat ik je hiermee lastigval"
+- Pre-emptively offering Marleen an out before she's even responded ("…maar als het niet uitkomt is dat echt geen probleem hoor")
+- Backing down at the first sign of hesitation or silence — withdrawing the ask, downgrading it, or saying "laat maar"
+- Burying the ask under so much context that Marleen has to dig it out
+- Going the other way: being entitled, brushing past the short notice, not acknowledging the imposition at all
+- Treating a counter-offer (draft it yourself, ask someone else as backup, etc.) as a "no" and shutting down
+- Hanging up / wrapping up without a concrete next step (deadline, what to send, when to follow up)
+
+STRETCH (only mention if genuinely demonstrated):
+- Acknowledges the short notice honestly and briefly, then moves on instead of dwelling on it
+- Proactively offers something that lowers Marleen's cost (a CV, a project summary, a draft she can edit, bullet points of what the reference is for)
+- Closes the call with a clear, concrete agreement: who does what, by when
+- Thanks her once, sincerely, at the end — not repeatedly throughout
+
+FEEDBACK FOCUS (what the tutor should weight most heavily for THIS scenario):
+This scenario is specifically about fear of being a nuisance. Weight feedback toward whether the user could *stay in* the request when it felt uncomfortable — not whether the wording was perfect. A slightly clunky but steady ask is a much better outcome than a smooth ask that quietly retreats halfway through.

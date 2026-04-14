@@ -1,0 +1,18 @@
+{
+  "name": "social-sim-claude",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A browser-based social anxiety training simulator with AI-driven characters.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.175.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.2"
+  }
+}

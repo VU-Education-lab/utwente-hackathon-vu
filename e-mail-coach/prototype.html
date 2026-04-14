@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-mailStories — Proefversie</title>
+<style>
+  /* ============================================================
+     E-mailStories — UI proof of concept
+     Single-file prototype, vanilla HTML/CSS/JS, no dependencies.
+     ============================================================ */
+
+  :root {
+    --bg: #FAF6F0;
+    --bg-warm: #F4ECE0;
+    --ink: #2A2520;
+    --ink-soft: #6B6259;
+    --line: #E8DFD2;
+    --accent: #E87B5C;
+    --accent-soft: #F4B5A0;
+    --cool: #5B8FB9;
+    --warm: #D4B896;
+    --hot: #E87B5C;
+    --good: #8BAA7C;
+    --shadow: 0 20px 60px -20px rgba(60, 40, 20, 0.25);
+    --radius: 18px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1F1A15;
+      --bg-warm: #2A231C;
+      --ink: #F4ECE0;
+      --ink-soft: #B8AC9E;
+      --line: #3A322A;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: -apple-system, "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 20% 10%, #F4ECE0 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, #FAEBD7 0%, transparent 50%),
+      var(--bg);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  /* ====== Phone frame ====== */
+  .phone {
+    width: 100%;
+    max-width: 420px;
+    height: min(820px, calc(100vh - 48px));
+    background: var(--bg);
+    border-radius: 36px;
+    box-shadow: var(--shadow), 0 0 0 1px var(--line);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ====== Screens ====== */
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 350ms ease, transform 350ms ease;
+    overflow-y: auto;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .screen-pad {
+    padding: 28px 24px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ====== Typography ====== */
+  h1, h2, h3 {
+    font-family: "Iowan Old Style", "Palatino", Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h1 { font-size: 28px; line-height: 1.15; }
+  h2 { font-size: 22px; line-height: 1.2; }
+  h3 { font-size: 17px; line-height: 1.3; }
+  p { color: var(--ink-soft); font-size: 15px; }
+  .muted { color: var(--ink-soft); font-size: 13px; }
+
+  /* ====== Buttons ====== */
+  button {
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+  .btn {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 22px;
+    border-radius: 100px;
+    font-weight: 500;
+    transition: transform 150ms ease, background 150ms ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-soft {
+    background: var(--bg-warm);
+    color: var(--ink);
+  }
+  .btn-row { display: flex; gap: 10px; margin-top: auto; padding-top: 18px; }
+  .btn-row .btn { flex: 1; }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+
+  /* ============================================================
+     SCREEN 1 — HOME
+     ============================================================ */
+  .home-greeting {
+    margin-bottom: 24px;
+  }
+  .home-greeting .small {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .scenario-card {
+    background: var(--bg-warm);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 200ms ease, transform 200ms ease;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .scenario-card:hover {
+    border-color: var(--accent-soft);
+    transform: translateX(2px);
+  }
+  .scenario-illustration {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #F4B5A0, #E87B5C);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .scenario-card.locked .scenario-illustration {
+    background: linear-gradient(135deg, #D4C8B6, #B8AC9E);
+  }
+  .scenario-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .scenario-card.locked {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* ============================================================
+     SCREEN 2 — CHARACTER CARD
+     ============================================================ */
+  .character-portrait {
+    width: 140px;
+    height: 140px;
+    margin: 16px auto 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E8DFD2, #C9BCA8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+  }
+  .character-name {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .character-role {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .vibe-tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .vibe-tag {
+    background: var(--bg-warm);
+    color: var(--ink);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+  }
+  .vibe-meter-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .vibe-meter {
+    height: 10px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--cool), var(--warm), var(--hot));
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .vibe-marker {
+    position: absolute;
+    top: 50%;
+    left: 28%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 3px solid var(--bg);
+    transform: translate(-50%, -50%);
+  }
+  .vibe-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 24px;
+  }
+
+  /* ============================================================
+     SCREEN 3 — INTRO
+     ============================================================ */
+  .intro-frame {
+    flex: 1;
+    background: linear-gradient(160deg, #F4ECE0, #E8DFD2);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-frame::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(232, 123, 92, 0.15), transparent 70%);
+    top: -40px;
+    right: -40px;
+    border-radius: 50%;
+  }
+  .intro-text {
+    font-family: "Iowan Old Style", Georgia, serif;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink);
+    position: relative;
+  }
+  .intro-text strong {
+    background: linear-gradient(180deg, transparent 60%, rgba(232, 123, 92, 0.3) 60%);
+  }
+  .intro-cta {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 18px;
+    font-size: 14px;
+    position: relative;
+  }
+
+  /* ============================================================
+     SCREEN 4 — WRITING SCENE
+     ============================================================ */
+  .write-context {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-warm);
+    padding: 12px 14px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .write-context-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C9BCA8, #A89882);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .write-context-text {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.35;
+  }
+  .write-context-text strong { color: var(--ink); }
+
+  .editor-wrap {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    min-height: 0;
+  }
+  .editor {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .editor textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: transparent;
+    width: 100%;
+  }
+  .editor textarea::placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* The ToonMeter */
+  .toonmeter {
+    width: 56px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .toonmeter-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .toonmeter-track {
+    flex: 1;
+    width: 14px;
+    border-radius: 100px;
+    background: linear-gradient(180deg, var(--hot) 0%, var(--warm) 50%, var(--cool) 100%);
+    position: relative;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+  }
+  .toonmeter-zone {
+    position: absolute;
+    left: -3px;
+    right: -3px;
+    top: 18%;
+    height: 25%;
+    border: 2px dashed rgba(42, 37, 32, 0.4);
+    border-radius: 100px;
+    background: rgba(139, 170, 124, 0.12);
+  }
+  .toonmeter-needle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 3px solid var(--bg);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: top 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 0 rgba(232, 123, 92, 0.4); }
+    50%      { box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 0 6px rgba(232, 123, 92, 0); }
+  }
+  .toonmeter-poles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 9px;
+    color: var(--ink-soft);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Signal word hints */
+  .hints {
+    margin-top: 10px;
+    min-height: 26px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .hint {
+    font-size: 11px;
+    padding: 5px 9px;
+    border-radius: 100px;
+    background: var(--bg-warm);
+    color: var(--ink-soft);
+    border: 1px dashed var(--line);
+    animation: fadeIn 300ms ease;
+  }
+  .hint.warm { color: var(--accent); border-color: var(--accent-soft); }
+  .hint.cool { color: var(--cool); border-color: #B8CFE0; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================================
+     SCREEN 5 — RECIPIENT REACTION
+     ============================================================ */
+  .reaction-stage {
+    flex: 1;
+    background: linear-gradient(160deg, #F4ECE0, #E8DFD2);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .face-wrap {
+    position: relative;
+    width: 160px;
+    height: 160px;
+  }
+  .face-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 8px 20px rgba(60, 40, 20, 0.2));
+  }
+  .thought-bubble {
+    background: var(--bg);
+    border-radius: 22px;
+    padding: 16px 20px;
+    max-width: 280px;
+    text-align: center;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink);
+    position: relative;
+    box-shadow: var(--shadow);
+    animation: pop 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .thought-bubble::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    background: var(--bg);
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+  .thought-bubble::after {
+    content: "";
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--bg);
+    border-radius: 50%;
+    transform: translateX(-12px);
+  }
+  @keyframes pop {
+    0%   { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ============================================================
+     SCREEN 6 — REPORT
+     ============================================================ */
+  .report-mock {
+    background: var(--bg-warm);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+    white-space: pre-wrap;
+    max-height: 160px;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+  }
+  .report-section h3 {
+    margin-bottom: 10px;
+  }
+  .compare {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .compare-card {
+    flex: 0 0 78%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .compare-card strong {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .compare-card.you {
+    background: var(--bg-warm);
+    color: var(--ink);
+    border-color: var(--accent-soft);
+  }
+
+  /* ====== Utility ====== */
+  .spacer { flex: 1; }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- =============================================================
+       SCREEN 1 — HOME
+       ============================================================= -->
+  <section class="screen active" id="screen-home">
+    <div class="screen-pad">
+      <div class="home-greeting">
+        <div class="small">E-mailStories</div>
+        <h1>Welk verhaal beleef je vandaag?</h1>
+      </div>
+
+      <div class="scenario-card" data-go="character">
+        <div class="scenario-illustration">📚</div>
+        <div>
+          <h3>Herkansing aanvragen</h3>
+          <div class="scenario-meta">
+            <span>4 min</span><span>·</span><span>Hoogleraar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">💼</div>
+        <div>
+          <h3>Stageplek vragen</h3>
+          <div class="scenario-meta">
+            <span>5 min</span><span>·</span><span>Onbekend bedrijf</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">🏥</div>
+        <div>
+          <h3>Afspraak verzetten</h3>
+          <div class="scenario-meta">
+            <span>3 min</span><span>·</span><span>Huisarts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <p class="muted" style="text-align:center; margin-top:18px;">
+        Proefversie · alleen het eerste verhaal is speelbaar
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 2 — CHARACTER CARD
+       ============================================================= -->
+  <section class="screen" id="screen-character">
+    <div class="screen-pad">
+      <button class="back" data-go="home">← terug</button>
+
+      <div class="character-portrait">
+        <!-- Simple SVG portrait -->
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="42" r="22" fill="#F4ECE0"/>
+          <path d="M20 95 Q20 65 50 65 Q80 65 80 95" fill="#5B6A7B"/>
+          <circle cx="42" cy="42" r="2.5" fill="#2A2520"/>
+          <circle cx="58" cy="42" r="2.5" fill="#2A2520"/>
+          <path d="M42 52 Q50 56 58 52" stroke="#2A2520" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M30 30 Q50 18 70 30 Q70 24 50 22 Q30 24 30 30" fill="#6B5849"/>
+          <rect x="35" y="38" width="12" height="6" rx="3" fill="none" stroke="#2A2520" stroke-width="1.2"/>
+          <rect x="53" y="38" width="12" height="6" rx="3" fill="none" stroke="#2A2520" stroke-width="1.2"/>
+          <line x1="47" y1="41" x2="53" y2="41" stroke="#2A2520" stroke-width="1.2"/>
+        </svg>
+      </div>
+
+      <h2 class="character-name">Prof. dr. Hendriks</h2>
+      <div class="character-role">Hoogleraar Geschiedenis · 58 jaar</div>
+
+      <div class="vibe-tags">
+        <span class="vibe-tag">precies</span>
+        <span class="vibe-tag">druk</span>
+        <span class="vibe-tag">formeel-binnen-grenzen</span>
+      </div>
+
+      <div class="vibe-meter-label">
+        <span>informeel</span>
+        <span>formeel</span>
+      </div>
+      <div class="vibe-meter">
+        <div class="vibe-marker"></div>
+      </div>
+      <div class="vibe-hint">een gevoelskwestie — niet exact</div>
+
+      <div class="spacer"></div>
+      <button class="btn" data-go="intro">Begin het verhaal →</button>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 3 — STORY INTRO
+       ============================================================= -->
+  <section class="screen" id="screen-intro">
+    <div class="screen-pad">
+      <button class="back" data-go="character">← terug</button>
+
+      <div class="intro-frame">
+        <div class="intro-text">
+          Het is <strong>donderdagavond</strong>. Morgen om negen uur is je tentamen
+          Cultuurgeschiedenis — maar je oma is plotseling opgenomen
+          in het ziekenhuis en je staat op het station, klaar om de trein
+          te pakken.
+          <br><br>
+          Je kunt morgen <strong>niet</strong> komen opdagen. Je moet
+          prof. Hendriks een mail sturen om een herkansing aan te vragen.
+          <br><br>
+          Je weet: hij staat bekend als precies, en hij krijgt elke dag
+          tientallen mailtjes van studenten.
+        </div>
+        <div class="intro-cta">tijd om te schrijven ↓</div>
+      </div>
+
+      <button class="btn" data-go="write">Schrijven</button>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 4 — WRITING SCENE
+       ============================================================= -->
+  <section class="screen" id="screen-write">
+    <div class="screen-pad">
+      <button class="back" data-go="intro">← terug</button>
+
+      <div class="write-context">
+        <div class="write-context-avatar">
+          <svg width="22" height="22" viewBox="0 0 100 100">
+            <circle cx="50" cy="42" r="22" fill="#F4ECE0"/>
+            <path d="M20 95 Q20 65 50 65 Q80 65 80 95" fill="#5B6A7B"/>
+            <circle cx="42" cy="42" r="3" fill="#2A2520"/>
+            <circle cx="58" cy="42" r="3" fill="#2A2520"/>
+          </svg>
+        </div>
+        <div class="write-context-text">
+          Aan: <strong>Prof. dr. Hendriks</strong><br>
+          Onderwerp: <strong>Herkansing tentamen Cultuurgeschiedenis</strong>
+        </div>
+      </div>
+
+      <div class="editor-wrap">
+        <div class="editor">
+          <textarea
+            id="emailInput"
+            placeholder="Begin met schrijven... bijvoorbeeld 'Geachte...' of 'Hey...' — voel zelf wat past."
+          ></textarea>
+        </div>
+
+        <div class="toonmeter" title="ToonMeter">
+          <div class="toonmeter-label">toon</div>
+          <div class="toonmeter-track">
+            <div class="toonmeter-zone"></div>
+            <div class="toonmeter-needle" id="needle"></div>
+          </div>
+          <div class="toonmeter-poles">
+            <span>cool</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hints" id="hints"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-soft" data-go="intro">Pauzeer</button>
+        <button class="btn" data-go="reaction" id="sendBtn">Verstuur →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 5 — RECIPIENT REACTION
+       ============================================================= -->
+  <section class="screen" id="screen-reaction">
+    <div class="screen-pad">
+      <button class="back" data-go="write">← pas aan</button>
+
+      <div class="reaction-stage">
+        <div class="face-wrap" id="faceWrap">
+          <!-- SVG face injected by JS -->
+        </div>
+        <div class="thought-bubble" id="thought">...</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-soft" data-go="write">Pas aan</button>
+        <button class="btn" data-go="report">Lees rapport →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 6 — REPORT
+       ============================================================= -->
+  <section class="screen" id="screen-report">
+    <div class="screen-pad">
+      <button class="back" data-go="reaction">← terug</button>
+
+      <h2 style="margin-bottom: 14px;">Jouw e-mail</h2>
+      <div class="report-mock" id="reportEmail">...</div>
+
+      <div class="report-section">
+        <h3>Wat opviel</h3>
+        <div id="reportNotes" style="margin-bottom: 18px;"></div>
+      </div>
+
+      <div class="report-section">
+        <h3>Drie versies naast elkaar</h3>
+        <div class="compare">
+          <div class="compare-card">
+            <strong>Te informeel</strong>
+            Hey prof! Sorry maar ik kan morgen ff niet, m'n oma ligt in het ziekenhuis 😬 kan ik herkansen ofzo? Groetjes
+          </div>
+          <div class="compare-card you" id="compareYou">
+            <strong>Jouw versie</strong>
+            ...
+          </div>
+          <div class="compare-card">
+            <strong>Te formeel</strong>
+            Hooggeachte heer professor doctor Hendriks, met de meeste hoogachting wend ik mij tot u in de hoop dat u welwillend wilt overwegen... (te stijf, voelt als een brief uit 1950)
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <button class="btn" data-go="home">Terug naar verhalen</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   Screen navigation
+   ============================================================ */
+const screens = document.querySelectorAll('.screen');
+function go(name) {
+  screens.forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('screen-' + name);
+  if (target) target.classList.add('active');
+  if (name === 'reaction') showReaction();
+  if (name === 'report')   showReport();
+}
+document.querySelectorAll('[data-go]').forEach(el => {
+  el.addEventListener('click', () => go(el.dataset.go));
+});
+
+/* ============================================================
+   ToonMeter — rule-based scoring
+   Score: 0 (very informal) → 100 (very formal)
+   Target zone for hoogleraar: 60-85
+   ============================================================ */
+const input = document.getElementById('emailInput');
+const needle = document.getElementById('needle');
+const hintsEl = document.getElementById('hints');
+
+function calculateTone(text) {
+  if (!text.trim()) return { score: 50, hints: [] };
+
+  let score = 50;
+  const hints = [];
+
+  // Informal greetings
+  if (/\b(hey+|hoi+|yo+|hee+y?|hai+)\b/i.test(text)) {
+    score -= 25;
+    hints.push({ text: '"Hey" voelt los voor een hoogleraar', type: 'warm' });
+  }
+  if (/\bbeste\b/i.test(text)) {
+    score += 5;
+    hints.push({ text: '"Beste" — neutraal-vriendelijk', type: '' });
+  }
+  if (/\b(geachte|hooggeachte)\b/i.test(text)) {
+    score += 25;
+    hints.push({ text: '"Geachte" — formele opening', type: 'cool' });
+  }
+
+  // Formal/informal pronouns
+  const uMatches  = (text.match(/\b(u|uw)\b/gi) || []).length;
+  const jeMatches = (text.match(/\b(je|jij|jou|jouw)\b/gi) || []).length;
+  if (uMatches > 0 && uMatches >= jeMatches) {
+    score += 15;
+    hints.push({ text: 'aanspreekvorm "u" — past hier', type: 'cool' });
+  }
+  if (jeMatches > uMatches && jeMatches > 0) {
+    score -= 15;
+    hints.push({ text: '"je" tegen een hoogleraar voelt direct', type: 'warm' });
+  }
+
+  // Closings
+  if (/\b(hoogachtend|met vriendelijke groet|mvg)\b/i.test(text)) {
+    score += 15;
+    hints.push({ text: 'nette afsluiting', type: 'cool' });
+  }
+  if (/\b(groetjes|cheers|byee+|doei|xxx|x{2,})\b/i.test(text)) {
+    score -= 20;
+    hints.push({ text: 'losse afsluiting', type: 'warm' });
+  }
+
+  // Emojis
+  const emojiCount = (text.match(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{27BF}]/gu) || []).length;
+  if (emojiCount > 0) {
+    score -= emojiCount * 12;
+    hints.push({ text: 'emoji — past dat hier?', type: 'warm' });
+  }
+
+  // Multiple exclamation marks
+  if (/[!?]{2,}/.test(text)) {
+    score -= 10;
+    hints.push({ text: 'meerdere uitroeptekens', type: 'warm' });
+  }
+
+  // Slang and fillers
+  const slangCount = (text.match(/\b(btw|ff|ofzo|lol|xd|haha+|gewoon|echt|zegmaar|sowieso|whatever)\b/gi) || []).length;
+  if (slangCount > 0) {
+    score -= slangCount * 6;
+    hints.push({ text: 'spreektaal-woorden', type: 'warm' });
+  }
+
+  // Low capitalization
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim());
+  if (sentences.length > 1) {
+    const noCap = sentences.filter(s => /^[a-z]/.test(s.trim())).length;
+    if (noCap / sentences.length > 0.3) {
+      score -= 8;
+      hints.push({ text: 'weinig hoofdletters', type: 'warm' });
+    }
+  }
+
+  // Length signals
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+  if (wordCount < 12) {
+    score -= 4;
+  } else if (wordCount > 35) {
+    score += 4;
+  }
+
+  // Cap to range
+  score = Math.max(0, Math.min(100, score));
+
+  // Cap hint count to keep it calm
+  return { score, hints: hints.slice(0, 3) };
+}
+
+function updateMeter() {
+  const { score, hints } = calculateTone(input.value);
+
+  // Needle position: bottom = 100% (cool/formal), top = 0% (hot/informal)
+  // We want: high score = formal = bottom of meter (which is "cool" gradient)
+  // Track gradient: top = hot, bottom = cool, so:
+  //   score 100 → top 100% (bottom = cool)
+  //   score 0   → top 0%   (top = hot)
+  needle.style.top = score + '%';
+
+  // Render hints
+  hintsEl.innerHTML = '';
+  hints.forEach(h => {
+    const el = document.createElement('div');
+    el.className = 'hint ' + (h.type || '');
+    el.textContent = h.text;
+    hintsEl.appendChild(el);
+  });
+}
+
+input.addEventListener('input', updateMeter);
+
+/* ============================================================
+   Reaction screen — face + thought based on tone
+   ============================================================ */
+const FACES = {
+  frown: `
+    <svg viewBox="0 0 200 200" class="face-svg">
+      <circle cx="100" cy="100" r="85" fill="#F4ECE0"/>
+      <circle cx="100" cy="100" r="85" fill="none" stroke="#2A2520" stroke-width="3"/>
+      <ellipse cx="72" cy="90" rx="6" ry="8" fill="#2A2520"/>
+      <ellipse cx="128" cy="90" rx="6" ry="8" fill="#2A2520"/>
+      <line x1="60" y1="72" x2="84" y2="78" stroke="#2A2520" stroke-width="3" stroke-linecap="round"/>
+      <line x1="116" y1="78" x2="140" y2="72" stroke="#2A2520" stroke-width="3" stroke-linecap="round"/>
+      <path d="M70 145 Q100 125 130 145" stroke="#2A2520" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>`,
+  puzzled: `
+    <svg viewBox="0 0 200 200" class="face-svg">
+      <circle cx="100" cy="100" r="85" fill="#F4ECE0"/>
+      <circle cx="100" cy="100" r="85" fill="none" stroke="#2A2520" stroke-width="3"/>
+      <ellipse cx="72" cy="92" rx="6" ry="7" fill="#2A2520"/>
+      <ellipse cx="128" cy="88" rx="6" ry="7" fill="#2A2520"/>
+      <line x1="60" y1="76" x2="84" y2="78" stroke="#2A2520" stroke-width="3" stroke-linecap="round"/>
+      <line x1="116" y1="72" x2="140" y2="80" stroke="#2A2520" stroke-width="3" stroke-linecap="round"/>
+      <path d="M75 140 Q90 138 105 142 Q120 138 135 140" stroke="#2A2520" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>`,
+  pleased: `
+    <svg viewBox="0 0 200 200" class="face-svg">
+      <circle cx="100" cy="100" r="85" fill="#F4ECE0"/>
+      <circle cx="100" cy="100" r="85" fill="none" stroke="#2A2520" stroke-width="3"/>
+      <path d="M62 92 Q72 84 82 92" stroke="#2A2520" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M118 92 Q128 84 138 92" stroke="#2A2520" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M70 130 Q100 155 130 130" stroke="#2A2520" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="65" cy="115" r="6" fill="#F4B5A0" opacity="0.6"/>
+      <circle cx="135" cy="115" r="6" fill="#F4B5A0" opacity="0.6"/>
+    </svg>`,
+  amused: `
+    <svg viewBox="0 0 200 200" class="face-svg">
+      <circle cx="100" cy="100" r="85" fill="#F4ECE0"/>
+      <circle cx="100" cy="100" r="85" fill="none" stroke="#2A2520" stroke-width="3"/>
+      <ellipse cx="72" cy="90" rx="5" ry="7" fill="#2A2520"/>
+      <ellipse cx="128" cy="90" rx="5" ry="7" fill="#2A2520"/>
+      <path d="M58 78 Q72 70 84 80" stroke="#2A2520" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M116 80 Q128 70 142 78" stroke="#2A2520" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M75 130 Q100 145 125 130 Q115 138 100 138 Q85 138 75 130" fill="#2A2520"/>
+    </svg>`
+};
+
+function showReaction() {
+  const { score } = calculateTone(input.value);
+  const wrap = document.getElementById('faceWrap');
+  const thought = document.getElementById('thought');
+
+  let face, line;
+  if (score < 35) {
+    face = 'frown';
+    line = '"...is dit een appje?"';
+  } else if (score < 60) {
+    face = 'puzzled';
+    line = '"Hmm, wat informeel voor zo\'n verzoek..."';
+  } else if (score <= 85) {
+    face = 'pleased';
+    line = '"Helder en respectvol — dank je."';
+  } else {
+    face = 'amused';
+    line = '"Wat formeel zeg... ik ben geen koning."';
+  }
+  wrap.innerHTML = FACES[face];
+  thought.textContent = line;
+}
+
+/* ============================================================
+   Report screen
+   ============================================================ */
+function showReport() {
+  const text = input.value.trim() || '(je hebt nog niets geschreven)';
+  document.getElementById('reportEmail').textContent = text;
+  document.getElementById('compareYou').innerHTML =
+    '<strong>Jouw versie</strong>' + escapeHtml(text || '...');
+
+  const { score } = calculateTone(input.value);
+  const notes = [];
+
+  // Greeting
+  if (/\b(geachte|hooggeachte)\b/i.test(text)) {
+    notes.push('Je opende met een formele aanhef — die past bij iemand die je niet kent.');
+  } else if (/\b(hey+|hoi+|yo+|beste)\b/i.test(text)) {
+    notes.push('Je opening was vriendelijk-direct. Voelde dat passend voor deze ontvanger?');
+  } else {
+    notes.push('Je hebt geen duidelijke aanhef — bij een onbekende lezer mist die soms de toon.');
+  }
+
+  // Pronouns
+  const u  = (text.match(/\b(u|uw)\b/gi) || []).length;
+  const je = (text.match(/\b(je|jij|jou|jouw)\b/gi) || []).length;
+  if (u > 0 && je === 0) {
+    notes.push('Je gebruikte consequent "u" — dat geeft afstand op een respectvolle manier.');
+  } else if (je > 0 && u === 0) {
+    notes.push('Je sprak haar aan met "je" — direct en informeel. In dit scenario voelt dat snel te dichtbij.');
+  } else if (je > 0 && u > 0) {
+    notes.push('Je wisselde tussen "u" en "je" — daar ontstaat soms een onbedoeld haperend ritme.');
+  }
+
+  // Length
+  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  if (wordCount < 25) {
+    notes.push('Je e-mail is kort. In een formele context laat extra context (waarom, wanneer) vaak juist serieusheid zien.');
+  } else if (wordCount > 80) {
+    notes.push('Je e-mail is uitgebreid. Bij een drukke ontvanger kan kernachtig formuleren respectvoller voelen.');
+  }
+
+  // Overall summary
+  if (score < 40) notes.push('Algemene toon: vrij informeel — voor deze ontvanger waarschijnlijk te los.');
+  else if (score > 85) notes.push('Algemene toon: zeer formeel — overdreven kan ook afstand creëren.');
+  else if (score >= 60 && score <= 85) notes.push('Algemene toon: goed gekalibreerd voor deze ontvanger.');
+  else notes.push('Algemene toon: in de buurt, maar nog wat aan de losse kant.');
+
+  document.getElementById('reportNotes').innerHTML =
+    notes.map(n => `<p style="margin-bottom:10px;">${escapeHtml(n)}</p>`).join('');
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+// Initial state
+updateMeter();
+</script>
+</body>
+</html>

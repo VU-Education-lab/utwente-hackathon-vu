@@ -1,0 +1,47 @@
+# ──────────────────────────────────────────────────────────────
+#  Monorepo .gitignore — applied across all subprojects.
+#  Per-project .gitignore files still apply on top of this.
+# ──────────────────────────────────────────────────────────────
+
+# Secrets — NEVER commit
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+
+# Local tooling / editors
+.DS_Store
+.vscode/
+.idea/
+.claude/
+
+# Node / JS
+node_modules/
+dist/
+.vite/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.pytest_cache/
+*.egg-info/
+
+# Local archives / backups — created during monorepo assembly
+.pre-monorepo-backup/
+
+# Dev-only log files
+social-sim.log
+social-sim.log.*
+
+# Build artefacts from Streamlit / FastAPI experiments
+.streamlit/secrets.toml
+
+# OS
+Thumbs.db

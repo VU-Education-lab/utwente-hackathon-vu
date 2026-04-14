@@ -1,0 +1,17 @@
+SCENARIO: Ask A Professor For Help
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Names a specific question, concept, or part of the assignment they're stuck on (not "I'm just confused")
+- Gets to the actual ask within the first 1-2 turns, without long preamble
+- Tone is respectful but not over-deferential or apologetic
+- Engages with the professor's clarifying questions directly when asked
+
+COMMON PITFALLS (look out for these):
+- Opens with "sorry to bother you" or treats the professor as if they'll be annoyed
+- Vague request ("I don't understand anything") that gives the professor nothing to work with
+- Rambles or buries the ask under context
+- Over-apologizes after every sentence
+
+STRETCH (only mention if genuinely demonstrated):
+- Shows what they've already tried before asking
+- Names the specific concept they think is the blocker

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakEasy</title>
+  <link rel="stylesheet" href="shell.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23E87B5C'/><text x='32' y='44' font-size='34' font-weight='800' fill='white' text-anchor='middle' font-family='system-ui'>S</text></svg>" />
+</head>
+<body>
+  <div class="shell-app">
+
+    <header class="shell-app-header">
+      <a class="shell-back" href="./" aria-label="Back to overview">
+        <span aria-hidden="true">←</span>
+        <span>Overview</span>
+      </a>
+
+      <div class="shell-step-info">
+        <span class="shell-step-eyebrow" id="shell-step-eyebrow">Step 1 of 3</span>
+        <span class="shell-step-title" id="shell-step-title">Loading…</span>
+      </div>
+
+      <div class="shell-progress" id="shell-progress" aria-label="Progress">
+        <span class="shell-dot" data-step="email"></span>
+        <span class="shell-dot" data-step="call"></span>
+        <span class="shell-dot" data-step="sim"></span>
+      </div>
+
+      <a class="shell-next" id="shell-next" href="#" hidden>
+        Next step <span aria-hidden="true">→</span>
+      </a>
+    </header>
+
+    <div class="shell-frame-wrap">
+      <div class="shell-frame-loading" id="shell-loading">
+        <div class="shell-frame-loading-inner">
+          <div class="shell-spinner"></div>
+          <div>Loading <span id="shell-loading-name">step</span>…</div>
+        </div>
+      </div>
+      <iframe
+        id="shell-frame"
+        class="shell-frame"
+        title="SpeakEasy step"
+        allow="microphone; camera; autoplay; display-capture; clipboard-read; clipboard-write"
+      ></iframe>
+    </div>
+
+  </div>
+
+  <script src="shell.js"></script>
+</body>
+</html>

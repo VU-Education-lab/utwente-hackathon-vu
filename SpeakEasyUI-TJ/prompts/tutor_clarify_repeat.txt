@@ -1,0 +1,17 @@
+SCENARIO: Ask Someone To Repeat Clearly
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Asks for repetition directly, without excessive apology
+- Names specifically what they need clarified ("the price", "the size", "the time")
+- Stays calm and friendly under the noise/pressure
+- Confirms back what they heard once they get the answer
+
+COMMON PITFALLS (look out for these):
+- Over-apologizing ("oh my god I'm so sorry, I didn't catch that")
+- Avoiding the ask and guessing instead
+- Vague clarification ("sorry, what?") instead of naming what they missed
+- Getting visibly flustered or shrinking
+
+STRETCH (only mention if genuinely demonstrated):
+- Uses a clean, specific framing that makes the repetition feel easy ("Was that twelve or twenty?")
+- Adds a small bit of warmth back to the interaction

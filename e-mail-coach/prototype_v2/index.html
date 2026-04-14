@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-mailStories — Hybride prototype</title>
+<link rel="stylesheet" href="styles.css">
+<!-- SpeakEasy shell theme — overrides local :root tokens with brand palette.
+     Loaded last so the cascade wins. Comment out to develop in isolation. -->
+<link rel="stylesheet" href="../../shell/theme.css">
+</head>
+<body>
+
+<div class="phone" id="phone">
+
+  <!-- =============================================================
+       SCREEN 1 — HOME
+       ============================================================= -->
+  <section class="screen active" id="screen-home">
+    <div class="screen-pad">
+      <button class="admin-gear" data-go="admin" aria-label="Admin">⚙</button>
+
+      <div class="home-greeting">
+        <div class="small">E-mailStories · hybride</div>
+        <h1>Welk verhaal beleef je vandaag?</h1>
+      </div>
+
+      <div class="scenario-card" data-scenario="herkansing">
+        <div class="scenario-illustration">📚</div>
+        <div>
+          <h3>Herkansing aanvragen</h3>
+          <div class="scenario-meta">
+            <span>4 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">💼</div>
+        <div>
+          <h3>Stageplek vragen</h3>
+          <div class="scenario-meta">
+            <span>5 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">📝</div>
+        <div>
+          <h3>Uitstel inleveren opdracht</h3>
+          <div class="scenario-meta">
+            <span>4 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">📍</div>
+        <div>
+          <h3>Waar is het tentamen?</h3>
+          <div class="scenario-meta">
+            <span>3 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">🔍</div>
+        <div>
+          <h3>Inzage tentamen na cijfer</h3>
+          <div class="scenario-meta">
+            <span>5 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">⚖️</div>
+        <div>
+          <h3>Klachtenprocedure indienen</h3>
+          <div class="scenario-meta">
+            <span>6 min</span><span>·</span><span>examencommissie</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scenario-card locked">
+        <div class="scenario-illustration">🤔</div>
+        <div>
+          <h3>Oninteressant college melden</h3>
+          <div class="scenario-meta">
+            <span>5 min</span><span>·</span><span>formeel &amp; informeel</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="learn-card" data-go="learn">
+        <div class="learn-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <div class="learn-card-text">
+          <h3>Leer over e-mails schrijven</h3>
+          <div class="scenario-meta">
+            <span>14 onderwerpen</span><span>·</span><span>op je eigen tempo</span>
+          </div>
+        </div>
+      </button>
+
+      <div class="spacer"></div>
+      <p class="muted" style="text-align:center; margin-top:18px;">
+        Hybride proefversie · alleen het eerste verhaal is speelbaar
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 2 — LEARN
+       ============================================================= -->
+  <section class="screen" id="screen-learn">
+    <div class="screen-pad">
+      <button class="back" data-go="home">← terug</button>
+      <h2>Leer over e-mails schrijven</h2>
+      <p class="muted" style="margin-bottom: 22px;">
+        Kleine ideeën die helpen als het schrijven van een e-mail
+        spannend voelt.
+      </p>
+
+      <h3 class="learn-section-title">Het basisrepertoire</h3>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Aanhef en aanspreekvorm</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          "Geachte" is formeel, "Beste" is neutraal-vriendelijk, "Hoi" en
+          "Hallo" zijn informeel. Gebruik <strong>"u"</strong> bij
+          onbekenden of mensen die duidelijk ouder of hiërarchisch hoger
+          zijn; <strong>"je"</strong> bij bekenden of leeftijdsgenoten.
+          Als je twijfelt: begin formeel. De reactie van de ander laat
+          zien of je losser mag worden.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Register — de onzichtbare kleur van je tekst</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Register is hoe formeel of informeel je klinkt. Dezelfde
+          boodschap kan in verschillende registers worden geschreven —
+          en de ontvanger <em>voelt</em> het verschil, ook zonder het
+          te kunnen benoemen. Het juiste register kiezen is geen trucje
+          of regel, maar een vorm van empathie: je past je taal aan
+          aan de ander en aan de situatie.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">De structuur van een goede e-mail</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Een serieuze e-mail heeft vier delen:
+          <ul>
+            <li><strong>Aanhef</strong> — wie je aanspreekt ("Geachte heer Hendriks,")</li>
+            <li><strong>Introductie</strong> — wie je bent en waarom je schrijft, in één of twee zinnen</li>
+            <li><strong>Inhoud</strong> — je vraag, mededeling of verzoek, duidelijk geformuleerd</li>
+            <li><strong>Afsluiting</strong> — een nette groet met je naam</li>
+          </ul>
+          Dit is geen dwang maar een ritme dat ontvangers verwachten.
+          Afwijken mag, maar doe dat bewust.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">De onderwerpregel</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Drukke mensen scannen hun inbox op onderwerp. "Vraag" of
+          "Hallo" zegt niks. Maak het concreet: "Verzoek herkansing
+          Cultuurgeschiedenis" of "Vraag over stagebegeleiding". Een
+          duidelijke onderwerpregel verhoogt de kans dat je e-mail
+          snel wordt gelezen én dat de ontvanger zich erop kan
+          voorbereiden.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Zeg wie je bent</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Een docent, arts of manager heeft vaak honderden mensen die
+          naar hem mailen. "Ik ben Sanne de Vries, derdejaars
+          Geschiedenis, uw college op donderdag" helpt de ontvanger om
+          je te plaatsen. Zonder context moet hij raden — dat kost
+          moeite, vertraagt een antwoord, of maakt een antwoord
+          onmogelijk.
+        </div>
+      </details>
+
+      <h3 class="learn-section-title">De details die tellen</h3>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Lengte: kort waar het kan, lang waar het moet</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Drukke ontvangers waarderen korte e-mails. Maar té kort kan
+          ook respectloos voelen — alsof je geen moeite hebt gedaan
+          om de situatie uit te leggen. Vuistregel: precies wat nodig
+          is om je boodschap duidelijk te maken, niet meer. In
+          formele contexten ben je liever iets té uitvoerig dan té kort.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Hoofdletters en leestekens</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Hoofdletters aan het begin van zinnen en namen. Komma's om
+          adem te geven. Niet meer dan één uitroepteken per bericht —
+          meerdere voelen gelijk overdreven of paniekerig. "???" leest
+          als ongeduld. In formele e-mails laat je ellipsen ("..."),
+          aanvallende streepjes en HOOFDLETTERZINNEN weg. Deze details
+          bepalen vaak de toon meer dan de woordkeuze.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Emoji's</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Emoji's horen bij chat, niet bij formele e-mail. Zelfs een
+          vriendelijke glimlach kan een serieus verzoek ondermijnen in
+          de ogen van een lezer die op "nette vorm" let. In een
+          informele e-mail naar een vriend of leeftijdsgenoot mogen ze
+          wel. Vuistregel: bij twijfel weglaten. Je kunt vriendelijkheid
+          altijd uitdrukken in woorden.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Beleefdheidsmarkers</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Kleine woorden die een verzoek zachter maken:
+          <ul>
+            <li>"Zou u kunnen..." in plaats van "Kunt u..."</li>
+            <li>"Mocht het mogelijk zijn..."</li>
+            <li>"Vriendelijk verzoek..."</li>
+            <li>"Alvast bedankt"</li>
+          </ul>
+          Ze voelen misschien kunstmatig in appjes, maar in e-mail
+          voorkomen ze dat een verzoek als een eis landt.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Toonvalkuilen</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Sommige zinnen klinken harder dan je ze bedoelt:
+          <ul>
+            <li>"Zoals ik al eerder aangaf..." leest als verwijt</li>
+            <li>"Ik hoop dat je eindelijk..." leest als ongeduld</li>
+            <li>"Kun je mij laten weten..." leest als commando</li>
+          </ul>
+          Veiliger alternatieven: "Voor de duidelijkheid nogmaals...",
+          "Ik ben benieuwd of...", "Zou u kunnen laten weten...". Deze
+          nuances zijn het verschil tussen een e-mail die helpt en
+          een e-mail die irriteert.
+        </div>
+      </details>
+
+      <h3 class="learn-section-title">Voorbij het versturen</h3>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Herlees voor je verstuurt</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          De grootste bron van e-mailangst is: je hebt al op verzenden
+          gedrukt en iets klopte niet. Dat kun je grotendeels voorkomen
+          door vóór versturen één keer door te lezen. Let op: de
+          <strong>naam van de ontvanger</strong>, typo's, halve zinnen,
+          en of je vraag echt duidelijk staat. Dertig seconden extra
+          bespaart soms een dag aan spijt.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">E-mail is geen appje</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          In een appje mag taal kort, los, zonder hoofdletters, met
+          emoji's. In een e-mail voelt dezelfde taal al snel ongepast —
+          niet omdat e-mail "beter" of "ouder" is, maar omdat de twee
+          media verschillende verwachtingen oproepen bij de lezer.
+          Gen Z is opgegroeid met chat; e-mail is een apart dialect
+          dat je leert <em>naast</em> je chat-taal, niet in plaats van.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">De reactie is een gesprek</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          Een e-mail is niet "af" na versturen. De reactie die je
+          krijgt vertelt je hoe je de toon hebt ingeschat. Als de
+          ontvanger informeler antwoordt dan jij hebt geschreven, mag
+          jij in je volgende e-mail ook losser worden. Antwoordt hij
+          juist formeler — neem die toon mee. Register is een dialoog:
+          een afstemming die zich over meerdere berichten ontwikkelt.
+        </div>
+      </details>
+
+      <details class="topic-card">
+        <summary>
+          <span class="topic-title">Waarom e-mailangst bestaat</span>
+          <span class="topic-chevron">+</span>
+        </summary>
+        <div class="topic-body">
+          E-mail is ontworpen in een wereld waarin schrijven langzamer
+          was dan spreken. Chat heeft dat omgedraaid. Wanneer je nu
+          een serieuze e-mail moet sturen, moet je alsnog terug naar
+          "schrijf-modus" — en dat voelt raar, omdat je er weinig in
+          oefent. Dat je angst voor e-mail hebt is geen persoonlijke
+          tekortkoming; het is een logisch gevolg van hoe communicatie
+          is veranderd. Oefenen maakt het makkelijker, maar de zenuwen
+          hoeven niet helemaal weg — ze zijn een teken dat je het
+          serieus neemt.
+        </div>
+      </details>
+
+      <div style="height: 20px;"></div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 3 — ADMIN
+       ============================================================= -->
+  <section class="screen" id="screen-admin">
+    <div class="screen-pad">
+      <button class="back" data-go="home">← terug</button>
+      <h2>Admin</h2>
+      <p class="muted" style="margin-bottom: 20px;">
+        Test-omgeving om aanpakken te vergelijken
+      </p>
+
+      <!-- Mode selector -->
+      <div class="admin-section">
+        <h3>Modus</h3>
+        <div class="mode-options">
+          <label class="mode-option">
+            <input type="radio" name="mode" value="rules">
+            <div class="mode-card">
+              <strong>Rules-only</strong>
+              <span>Alleen regelgebaseerd. Snelste optie. Geen model nodig.</span>
+            </div>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="mode" value="ml">
+            <div class="mode-card">
+              <strong>ML-only</strong>
+              <span>Alleen lokaal taalmodel via Transformers.js.</span>
+            </div>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="mode" value="hybrid">
+            <div class="mode-card">
+              <strong>Hybride</strong>
+              <span>Beide tegelijk. Twee naalden op de meter, vergelijk live.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Model status -->
+      <div class="admin-section">
+        <h3>Model</h3>
+        <div class="model-status">
+          <span class="status-dot idle" id="statusDot"></span>
+          <span id="statusText">Niet geladen</span>
+        </div>
+        <div class="progress" id="progress" style="display:none;">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p class="muted" style="font-size: 12px; margin: 8px 0;">
+          Eerste keer ~120 MB download. Daarna gecached in je browser.
+        </p>
+        <button class="btn btn-soft" id="loadModelBtn">Laad model</button>
+      </div>
+
+      <!-- Settings -->
+      <div class="admin-section">
+        <h3>Instellingen</h3>
+        <div class="setting-row">
+          <label for="debounceSlider">ML debounce</label>
+          <div class="slider-wrap">
+            <input type="range" id="debounceSlider" min="200" max="2000" step="100" value="800">
+            <span id="debounceValue">800ms</span>
+          </div>
+        </div>
+        <p class="muted" style="font-size: 12px; margin-top: 6px; margin-bottom: 18px;">
+          Hoe lang het model wacht na de laatste toetsaanslag voordat het evalueert.
+        </p>
+
+        <div class="setting-row">
+          <label for="softmaxTempSlider">Softmax temperatuur (ML scherpte)</label>
+          <div class="slider-wrap">
+            <input type="range" id="softmaxTempSlider" min="10" max="120" step="5" value="50">
+            <span id="softmaxTempValue">50</span>
+          </div>
+        </div>
+        <p class="muted" style="font-size: 12px; margin-top: 6px;">
+          Hoe "scherp" de ML weegt tussen ankers. Hoger = sterker vasthouden
+          aan het dichtstbijzijnde anker (risico: zelfverzekerd fout). Lager =
+          meer middelen over alle ankers (risico: alles naar het midden).
+        </p>
+      </div>
+
+      <!-- Test bench -->
+      <div class="admin-section">
+        <h3>Test-bench</h3>
+
+        <div class="test-variant-selector">
+          <div class="setting-row">
+            <label for="testScenarioSelect">Scenario</label>
+            <select id="testScenarioSelect" class="select">
+              <option value="herkansing">Herkansing aanvragen</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <label for="testVariantSelect">Ontvanger</label>
+            <select id="testVariantSelect" class="select"></select>
+          </div>
+        </div>
+        <p class="muted" style="font-size: 12px; margin: -2px 0 12px;">
+          De rules- en ML-scores zijn universeel. De selectie hierboven
+          bepaalt alleen hoe ze worden geïnterpreteerd (target-zone,
+          voorspelde reactie).
+        </p>
+
+        <select id="testSamples" class="select">
+          <option value="">— kies een voorbeeld —</option>
+        </select>
+        <textarea id="testInput" class="test-textarea" placeholder="Of plak hier een e-mail..."></textarea>
+        <button class="btn" id="evaluateBtn">Beoordeel beide aanpakken</button>
+        <div id="testResults"></div>
+      </div>
+
+      <!-- Logs -->
+      <div class="admin-section">
+        <h3>Recente evaluaties</h3>
+        <div id="logs"><p class="muted">Nog geen logs</p></div>
+        <button class="btn btn-soft" id="clearLogsBtn" style="margin-top: 10px;">Wis logs</button>
+      </div>
+
+      <div style="height: 20px;"></div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 3 — CHARACTER CARD
+       ============================================================= -->
+  <section class="screen" id="screen-variant-picker">
+    <div class="screen-pad">
+      <button class="back" data-go="home">← terug</button>
+      <h2 style="margin-bottom: 8px;">Herkansing aanvragen</h2>
+      <p class="muted" style="margin-bottom: 22px;">
+        Kies met wie je de e-mail schrijft. Dezelfde situatie, andere
+        ontvanger — en daardoor een andere toon.
+      </p>
+
+      <div id="variantList"></div>
+
+      <div class="spacer"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-character">
+    <div class="screen-pad">
+      <button class="back" data-go="variant-picker">← terug</button>
+
+      <div class="character-portrait" id="characterPortrait">
+        <!-- SVG wordt door app.js ingevuld -->
+      </div>
+
+      <h2 class="character-name" id="characterName">—</h2>
+      <div class="character-role" id="characterRole">—</div>
+
+      <div class="vibe-tags" id="vibeTags">
+        <!-- Tags worden door app.js ingevuld -->
+      </div>
+
+      <div class="vibe-meter-label">
+        <span>informeel</span>
+        <span>formeel</span>
+      </div>
+      <div class="vibe-meter">
+        <div class="vibe-marker" id="vibeMarker"></div>
+      </div>
+      <div class="vibe-explain" id="vibeExplain">—</div>
+      <div class="vibe-hint" id="vibeSubtitle">—</div>
+
+      <div class="spacer"></div>
+      <button class="btn" data-go="intro">Begin het verhaal →</button>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 4 — STORY INTRO
+       ============================================================= -->
+  <section class="screen" id="screen-intro">
+    <div class="screen-pad">
+      <button class="back" data-go="character">← terug</button>
+
+      <div class="intro-frame">
+        <div class="intro-text" id="introText">—</div>
+        <div class="intro-cta">tijd om te schrijven ↓</div>
+      </div>
+
+      <button class="btn" data-go="write">Schrijven</button>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 5 — WRITING SCENE
+       ============================================================= -->
+  <section class="screen" id="screen-write">
+    <div class="screen-pad">
+      <div class="write-top-row">
+        <button class="back" data-go="intro">← terug</button>
+        <span class="mode-indicator" id="modeIndicator">regels</span>
+      </div>
+
+      <div class="write-context">
+        <div class="write-context-avatar">
+          <svg width="22" height="22" viewBox="0 0 100 100">
+            <circle cx="50" cy="42" r="22" fill="#F4ECE0"/>
+            <path d="M20 95 Q20 65 50 65 Q80 65 80 95" fill="#5B6A7B"/>
+            <circle cx="42" cy="42" r="3" fill="#2A2520"/>
+            <circle cx="58" cy="42" r="3" fill="#2A2520"/>
+          </svg>
+        </div>
+        <div class="write-context-text">
+          Aan: <strong id="writeContextTo">—</strong>
+        </div>
+      </div>
+
+      <div class="subject-row">
+        <input
+          type="text"
+          id="subjectInput"
+          class="subject-input"
+          placeholder="Onderwerpregel — bedenk zelf iets duidelijks..."
+          autocomplete="off"
+        />
+        <span class="subject-band-label" id="subjectBandLabel"></span>
+      </div>
+      <div class="subject-hints" id="subjectHints"></div>
+
+      <div class="editor-wrap">
+        <div class="editor">
+          <textarea
+            id="emailInput"
+            placeholder="Begin met schrijven... bijvoorbeeld 'Geachte...' of 'Hey...' — voel zelf wat past."
+          ></textarea>
+        </div>
+
+        <div class="toonmeter" title="ToonMeter">
+          <div class="toonmeter-label">informeel</div>
+          <div class="toonmeter-track">
+            <div class="toonmeter-zone"></div>
+            <div class="toonmeter-needle rules" id="needleRules" title="regels"></div>
+            <div class="toonmeter-needle ml" id="needleMl" title="ML" style="display:none;"></div>
+          </div>
+          <div class="toonmeter-poles">
+            <span>formeel</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-area">
+        <div class="ml-status" id="mlStatusBadge" style="display:none;"></div>
+        <div class="divergence" id="divergence" style="display:none;"></div>
+        <div class="hints" id="hints"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-soft" data-go="intro">Pauzeer</button>
+        <button class="btn" id="sendBtn">Verstuur →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 6 — RECIPIENT REACTION
+       ============================================================= -->
+  <section class="screen" id="screen-reaction">
+    <div class="screen-pad">
+      <button class="back" data-go="write">← pas aan</button>
+
+      <div class="reaction-stage">
+        <div class="face-wrap" id="faceWrap"></div>
+        <div class="thought-bubble" id="thought">...</div>
+        <div class="reaction-score" id="reactionScore"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-soft" data-go="write">Pas aan</button>
+        <button class="btn" data-go="report" id="readReportBtn">Lees rapport →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SCREEN 7 — REPORT
+       ============================================================= -->
+  <section class="screen" id="screen-report">
+    <div class="screen-pad">
+      <button class="back" data-go="reaction">← terug</button>
+
+      <h2 style="margin-bottom: 14px;">Jouw e-mail</h2>
+      <div class="report-subject">
+        <span class="report-subject-label">Onderwerp:</span>
+        <strong id="reportSubject">—</strong>
+        <span class="report-subject-band" id="reportSubjectBand"></span>
+      </div>
+      <div class="report-mock" id="reportEmail">...</div>
+
+      <div class="report-section">
+        <h3>Wat opviel</h3>
+        <div id="reportNotes" style="margin-bottom: 18px;"></div>
+      </div>
+
+      <div class="report-section">
+        <h3>Drie versies naast elkaar</h3>
+        <div class="compare">
+          <div class="compare-card">
+            <strong>Te informeel</strong>
+            Hey prof! Sorry maar ik kan morgen ff niet, m'n oma ligt in het ziekenhuis 😬 kan ik herkansen ofzo? Groetjes
+          </div>
+          <div class="compare-card you" id="compareYou">
+            <strong>Jouw versie</strong>
+            ...
+          </div>
+          <div class="compare-card">
+            <strong>Te formeel</strong>
+            Hooggeachte heer professor doctor Hendriks, met de meeste hoogachting wend ik mij tot u in de hoop dat u welwillend wilt overwegen... (te stijf, voelt als een brief uit 1950)
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <button class="btn" data-go="home">Terug naar verhalen</button>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       GUARDRAIL MODAL
+       ============================================================= -->
+  <div class="modal-overlay" id="guardrailModal">
+    <div class="modal">
+      <h3 id="guardrailTitle">Momentje</h3>
+      <p id="guardrailMessage"></p>
+      <button class="btn" id="guardrailClose">Oké, ik probeer opnieuw</button>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

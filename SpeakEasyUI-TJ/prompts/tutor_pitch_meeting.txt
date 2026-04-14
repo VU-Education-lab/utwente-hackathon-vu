@@ -1,0 +1,18 @@
+SCENARIO: Pitch An Idea In A Meeting
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- States the core idea in 1-2 sentences upfront, before context or backstory
+- Answers the lead's sharp follow-up questions directly, without dodging
+- Stays composed when challenged — does not get defensive or flustered
+- Names at least one concrete element: cost, customer, impact, timeline, or risk
+
+COMMON PITFALLS (look out for these):
+- Buries the lede under setup or backstory
+- Hand-waves on the hard questions ("we'd figure that out later")
+- Gets defensive or apologetic when challenged
+- Hedges everything to avoid being pinned down
+- Lets the lead's impatience throw them off their pitch
+
+STRETCH (only mention if genuinely demonstrated):
+- Anticipates the next question and answers it before being asked
+- Acknowledges a weakness in the idea while still defending its value

@@ -1,0 +1,106 @@
+/* ============================================================
+   SpeakEasy — shared brand theme
+   Loaded LAST in each sub-app so its :root tokens override
+   the project's local variables via the CSS cascade.
+
+   Strategy: define one canonical set of brand tokens, then
+   alias them to the variable names that each project already
+   uses. No find-and-replace needed in any sub-app.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Nunito+Sans:wght@300;400;600;700&display=swap');
+
+:root {
+  /* ---- Canonical brand tokens ------------------------------ */
+  --brand-bg:          #FAF6F0;   /* warm cream */
+  --brand-bg-2:        #F4ECE0;   /* slightly deeper cream */
+  --brand-bg-card:     #FFFFFF;   /* card surface */
+  --brand-bg-soft:     #F9F5EE;   /* alternate card surface */
+  --brand-line:        #E8DFD2;   /* hairline border */
+  --brand-line-soft:   #F0E8DA;
+
+  --brand-ink:         #2A2520;   /* primary text */
+  --brand-ink-soft:    #6B6259;   /* secondary text */
+  --brand-ink-muted:   #A89E94;   /* tertiary text */
+
+  --brand-accent:      #E87B5C;   /* warm coral — primary action */
+  --brand-accent-soft: #F4B5A0;
+  --brand-accent-2:    #6B8FC4;   /* dusty blue */
+  --brand-sage:        #7A9E87;   /* sage green */
+  --brand-warm:        #C4956A;   /* tan */
+  --brand-good:        #4F9D7C;   /* success */
+  --brand-warn:        #E9C46A;   /* warning */
+  --brand-hot:         #D97070;   /* danger */
+
+  --brand-shadow:      0 20px 60px -20px rgba(60, 40, 20, 0.25);
+  --brand-shadow-soft: 0 4px 32px rgba(0,0,0,0.08);
+  --brand-shadow-lg:   0 8px 48px rgba(0,0,0,0.12);
+  --brand-radius:      18px;
+
+  --brand-font:        'Nunito', -apple-system, "Segoe UI", system-ui, sans-serif;
+  --brand-font-display: 'Nunito', -apple-system, "Segoe UI", system-ui, sans-serif;
+  --brand-font-mono:   ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ---- Aliases for e-mail-coach ---------------------------- */
+  /* (uses --bg, --bg-warm, --ink, --ink-soft, --line, --accent,
+      --accent-soft, --cool, --warm, --hot, --good, --shadow, --radius) */
+  --bg:         var(--brand-bg);
+  --bg-warm:    var(--brand-bg-2);
+  --ink:        var(--brand-ink);
+  --ink-soft:   var(--brand-ink-soft);
+  --line:       var(--brand-line);
+  --accent:     var(--brand-accent);
+  --accent-soft: var(--brand-accent-soft);
+  --cool:       var(--brand-accent-2);
+  --warm:       var(--brand-warm);
+  --hot:        var(--brand-hot);
+  --good:       var(--brand-good);
+  --shadow:     var(--brand-shadow);
+  --radius:     var(--brand-radius);
+
+  /* ---- Aliases for bel-angst ------------------------------- */
+  /* (uses --bg, --card, --card2, --border, --sage, --sage-light,
+      --sage-dim, --warm, --warm-light, --red, --red-light, --blue,
+      --blue-light, --text, --text2, --muted, --shadow, --shadow-lg) */
+  --card:        var(--brand-bg-card);
+  --card2:       var(--brand-bg-soft);
+  --border:      var(--brand-line);
+  --sage:        var(--brand-sage);
+  --sage-light:  #E8F0EB;
+  --sage-dim:    #4A6E57;
+  --warm-light:  #F5EDE3;
+  --red:         var(--brand-hot);
+  --red-light:   #FDEAEA;
+  --blue:        var(--brand-accent-2);
+  --blue-light:  #E8EEF8;
+  --text:        var(--brand-ink);
+  --text2:       var(--brand-ink-soft);
+  --muted:       var(--brand-ink-muted);
+  --shadow-lg:   var(--brand-shadow-lg);
+}
+
+/* Force the brand palette in light AND dark mode — we don't want
+   the OS preference to flip e-mail-coach into its native dark theme
+   while bel-angst stays light. The shell experience is consistently
+   warm/light. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        var(--brand-bg);
+    --bg-warm:   var(--brand-bg-2);
+    --ink:       var(--brand-ink);
+    --ink-soft:  var(--brand-ink-soft);
+    --line:      var(--brand-line);
+    --text:      var(--brand-ink);
+    --text2:     var(--brand-ink-soft);
+    --card:      var(--brand-bg-card);
+    --card2:     var(--brand-bg-soft);
+    --border:    var(--brand-line);
+  }
+}
+
+/* Make sure body inherits the brand font even in apps that hard-code
+   their own font-family on body. The cascade lets per-element font
+   choices still win. */
+body {
+  font-family: var(--brand-font);
+}

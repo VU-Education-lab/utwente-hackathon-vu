@@ -1,0 +1,18 @@
+SCENARIO: Internship Interview
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Answers with structure — situation, action, outcome (or similar) — not just opinions or generalities
+- Gives at least one specific example with concrete details (a project, a moment, a number)
+- Stays composed when the interviewer probes or follows up
+- Connects their answer back to the role or the company in some way
+
+COMMON PITFALLS (look out for these):
+- Generic answers ("I'm a hard worker", "I work well in teams") with no example to back them up
+- Rambling without landing the point
+- Getting visibly thrown by follow-up questions
+- Hedging everything ("I think maybe I would probably...")
+- Reciting a memorized script that doesn't fit the actual question
+
+STRETCH (only mention if genuinely demonstrated):
+- Lands a memorable, specific moment that illustrates a real strength
+- Shows curiosity about the role with a thoughtful question of their own

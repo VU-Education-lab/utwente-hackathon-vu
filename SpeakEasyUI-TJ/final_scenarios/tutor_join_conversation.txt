@@ -1,0 +1,32 @@
+SCENARIO: Joining A Conversation In Progress (group of students you don't know yet)
+
+CORE GOAL OF THIS SCENARIO:
+The user must walk into a social situation they cannot script in advance. They don't know what the other students are talking about, they don't know how the group will react, and they have to introduce themselves anyway. The point is to push through both the unpredictability ("I don't know what they're going to say") and the fear of judgement ("they're going to think I'm weird for joining") without scripting, hovering, or retreating.
+
+PASS CRITERIA (the user must demonstrate at least 3 of these to pass):
+- Actually joins within the first 1-2 turns instead of hovering or asking permission
+- Introduces themselves by name OR makes clear who they are ("ik geloof dat we samen in college zitten")
+- Engages with what the group was already talking about, instead of hijacking the topic to something safer
+- Stays in the conversation through at least one neutral or unenthusiastic reaction without retreating
+- Tone is normal — not over-apologetic, not artificially cheerful or performative
+- Contributes something — a question, a small opinion, a relevant piece of experience — instead of only listening
+
+COMMON PITFALLS (look out for these):
+- Opens with "sorry to interrupt" / "sorry hoor, mag ik er even bij?" — treats joining as something they need permission for
+- Hovers without speaking and waits to be invited in
+- Reads a normal, neutral reaction as rejection and starts retreating ("oh laat maar, sorry")
+- Hijacks the topic to something they feel safer talking about, instead of engaging with what the group was actually saying
+- Over-explains why they came over ("ik zat in mijn eentje en ik dacht…")
+- Generic opener that gives the group nothing to grab onto ("hey wat doen jullie")
+- Doesn't introduce themselves at all and stays anonymous in the group
+- Performs — tries to be funny, impressive, or entertaining instead of just being present
+- Pulls out of the conversation before there's been any real exchange
+
+STRETCH (only mention if genuinely demonstrated):
+- Names what they overheard naturally ("ik hoorde jullie iets over X zeggen, klopt dat?") instead of pretending they walked up cold
+- Holds a brief silence or lull without filling it with apologies or self-deprecation
+- Asks the group something specific about their topic before steering it anywhere else
+- Lets the group keep being the group — doesn't try to make themselves the new centre of attention
+
+FEEDBACK FOCUS (what the tutor should weight most heavily for THIS scenario):
+This scenario specifically trains tolerance for unpredictability and for fear of social judgement. Weight feedback toward whether the user could (1) enter without a script and (2) read a neutral reaction as a neutral reaction, instead of as rejection. Do NOT weight feedback toward whether what they said was clever, smooth, or memorable. A clunky-but-steady join is a much better outcome than a polished line that quietly retreats after one flat response. The skill being trained here is staying present in social ambiguity, not social performance.

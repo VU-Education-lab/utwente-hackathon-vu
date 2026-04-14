@@ -1,0 +1,17 @@
+SCENARIO: Recover After An Awkward Moment
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Acknowledges the awkward moment briefly without overexplaining
+- Resets tone and moves the conversation forward
+- Does not grovel, spiral into apology, or pretend nothing happened
+- Tone after the recovery sounds natural, not stiff or defensive
+
+COMMON PITFALLS (look out for these):
+- Over-apologizes ("I'm so sorry, I didn't mean it like that, I just...")
+- Tries to explain the joke or comment in a way that makes it weirder
+- Pretends nothing happened (which often lands as worse)
+- Goes silent or shuts down
+
+STRETCH (only mention if genuinely demonstrated):
+- Uses a small bit of warmth or honest humor to fully reset the room
+- Names the awkwardness with confidence rather than shrinking from it

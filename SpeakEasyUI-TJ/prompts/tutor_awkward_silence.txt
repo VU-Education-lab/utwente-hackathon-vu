@@ -1,0 +1,17 @@
+SCENARIO: Handle Awkward Silence
+
+PASS CRITERIA (the user must demonstrate at least 2 of these to pass):
+- Keeps the conversation alive across at least 3 turns without giving up
+- Asks specific, easy-to-answer questions (not vague open prompts the partner will deflect)
+- Stays patient and warm despite the partner's short, vague replies
+- Does not flood the silence with their own monologue to escape the discomfort
+
+COMMON PITFALLS (look out for these):
+- Gives up after 1-2 short answers from the partner
+- Floods the conversation with their own words to avoid silence
+- Asks vague open questions ("how are you?", "what's new?") that get vague replies in return
+- Gets visibly frustrated or cold
+
+STRETCH (only mention if genuinely demonstrated):
+- Finds a topic or angle that gets the partner to actually open up
+- Stays comfortable in the silences themselves, not just filling them

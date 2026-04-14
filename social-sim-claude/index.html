@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Social Sim — Practice Social Situations Safely</title>
+    <link rel="stylesheet" href="/src/style.css" />
+    <!-- SpeakEasy shell theme (light variant) — loaded from the shell server
+         (python http.server :8000) so a single source of truth is shared
+         across all sub-apps. If the shell server isn't running this gracefully
+         no-ops and social-sim looks stock. Comment out to develop in isolation. -->
+    <link rel="stylesheet" href="http://localhost:8000/shell/theme.css" />
+  </head>
+  <body>
+    <!-- Title screen / scenario picker -->
+    <div id="title-screen" class="screen visible">
+      <div class="title-card">
+        <div class="title-eyebrow">Social Sim</div>
+        <h1 class="title-h1">A safe place to practice<br />being around people.</h1>
+        <p class="title-sub">
+          Step into a simulated social scene. The people are AI. The pressure is gone.
+          Listen, watch, and join in when you're ready — at your own pace.
+        </p>
+
+        <div class="scenario-grid" id="scenario-grid"></div>
+
+        <div class="title-footnote">
+          <span class="dot"></span>
+          Nothing you say leaves your browser, except calls to Azure OpenAI for the AI replies.
+        </div>
+      </div>
+    </div>
+
+    <!-- The main 3D + UI screen -->
+    <div id="game-screen" class="screen">
+      <canvas id="three-canvas"></canvas>
+
+      <!-- Top bar -->
+      <div id="top-bar">
+        <button class="icon-btn" id="btn-back" title="Back to scenarios">←</button>
+        <div class="scene-label">
+          <div class="scene-name" id="scene-name">Scene</div>
+          <div class="scene-sub" id="scene-sub">Loading…</div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="btn-pause" title="Pause / unpause (everything stops)">⏸</button>
+          <button class="icon-btn" id="btn-rewind" title="Rewind 30 seconds and try a different reply">⟲</button>
+          <button class="icon-btn" id="btn-mute" title="Mute voices">🔊</button>
+        </div>
+      </div>
+
+      <!-- Tips panel — fills with suggestions each time the character you're
+           talking to finishes a line. Two sections: clickable lines you can
+           literally say, plus general coaching advice. Collapsible. -->
+      <div id="tips-panel">
+        <div class="tips-header">
+          <span class="tips-title">Coach</span>
+          <button id="btn-tips-toggle" class="tips-toggle" title="Show or hide tips" aria-expanded="true">▾</button>
+        </div>
+        <div id="tips-body" class="tips-body">
+          <div id="tips-empty" class="tips-empty">Walk up to someone and look at them. Tips will show up here after they speak.</div>
+
+          <div id="tips-lines-section" class="tips-section" hidden>
+            <span class="tips-section-title">Things you could say · click to use</span>
+            <ul id="tips-list" class="tips-list"></ul>
+          </div>
+
+          <div id="tips-advice-section" class="tips-section" hidden>
+            <span class="tips-section-title">General tips</span>
+            <ul id="tips-advice" class="tips-advice"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live transcript of recent dialogue -->
+      <div id="transcript-panel">
+        <div class="transcript-header">Live transcript</div>
+        <div id="transcript-list"></div>
+      </div>
+
+      <!-- Subtle hint bubble -->
+      <div id="hint-bubble" class="hidden">
+        <div class="hint-title">Coach</div>
+        <div class="hint-body" id="hint-body"></div>
+      </div>
+
+      <!-- Bottom message input -->
+      <div id="input-bar">
+        <div id="approach-status">No one in earshot. Walk closer to a group.</div>
+        <div class="input-row">
+          <input id="message-input" type="text" maxlength="240"
+                 placeholder="Type something to say… (Enter to send, Tab for a hint)" autocomplete="off" />
+          <button id="btn-mic" title="Hold to talk · or click to start/stop recording">🎤</button>
+          <button id="btn-send">Say</button>
+          <button id="btn-hint" title="Get a gentle suggestion">Hint</button>
+        </div>
+        <div class="input-help">
+          WASD or arrow keys to move · Hold Shift to walk slower · Esc to pause · Click 🎤 to talk
+        </div>
+      </div>
+
+      <!-- Pause / debrief overlay -->
+      <div id="pause-overlay" class="overlay hidden">
+        <div class="overlay-card">
+          <h2>Paused</h2>
+          <p id="pause-summary">Take all the time you need. Nothing in here moves until you're ready.</p>
+          <div class="overlay-actions">
+            <button id="btn-resume" class="btn-primary">Resume</button>
+            <button id="btn-rewind-overlay">Rewind 30s</button>
+            <button id="btn-quit">Leave scene</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debrief at end of session -->
+      <div id="debrief-overlay" class="overlay hidden">
+        <div class="overlay-card debrief-card">
+          <h2>Session debrief</h2>
+          <div id="debrief-stats"></div>
+          <div id="debrief-feedback"></div>
+          <p class="debrief-note">
+            Remember: showing up is the win. Try a slightly harder scenario next time, or repeat
+            this one until it feels routine.
+          </p>
+          <div class="overlay-actions">
+            <button id="btn-debrief-again" class="btn-primary">Try again</button>
+            <button id="btn-debrief-home">Pick another scenario</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- API key warning -->
+    <div id="api-warning" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>Azure OpenAI not configured</h2>
+        <p>
+          Copy <code>.env.example</code> to <code>.env</code> and set the four
+          <code>VITE_AZURE_OPENAI_*</code> variables (endpoint, deployment, api version, key),
+          then restart the dev server.
+        </p>
+        <p class="muted">
+          You can still walk around, but the characters won't talk until Azure OpenAI is configured.
+        </p>
+        <div class="overlay-actions">
+          <button id="btn-dismiss-warning" class="btn-primary">Continue anyway</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

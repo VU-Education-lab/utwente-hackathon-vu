@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bel-oefening — Scenario overzicht</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f7f4ef;
+    color: #2d2926;
+    padding: 40px 24px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 24px; font-weight: 600; color: #2d2926;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-size: 14px; color: #6b6459; margin-bottom: 32px;
+  }
+  .difficulty-row {
+    display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap;
+  }
+  .diff-badge {
+    padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500;
+    border: 1.5px solid;
+  }
+  .diff-easy   { background: #e8f0eb; border-color: #7a9e87; color: #4a6e57; }
+  .diff-medium { background: #f9f7f4; border-color: #c4956a; color: #6b4c2a; }
+  .diff-hard   { background: #fdeaea; border-color: #d97070; color: #8a2020; }
+  .diff-desc { font-size: 12px; display: block; margin-top: 3px; font-weight: 400; opacity: 0.85; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e8e2d9;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .card-top { display: flex; align-items: flex-start; gap: 14px; }
+  .emoji-wrap {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: #f7f4ef; display: flex; align-items: center;
+    justify-content: center; font-size: 26px; flex-shrink: 0;
+  }
+  .name { font-size: 16px; font-weight: 600; color: #2d2926; margin-bottom: 2px; }
+  .sub  { font-size: 12px; color: #a89e94; }
+  .desc { font-size: 13px; color: #6b6459; line-height: 1.55; }
+  .character {
+    font-size: 12px; color: #6b6459; line-height: 1.55;
+    font-style: italic;
+    background: #f9f7f4; border-radius: 10px; padding: 10px 12px;
+  }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 20px; border: 1.5px solid;
+  }
+  .tag-shimmer { background: #e8eef8; border-color: #6b8fc4; color: #2a4a7a; }
+  .tag-echo    { background: #e8f0eb; border-color: #7a9e87; color: #2a4e37; }
+  .tag-extra   { background: #f9f7f4; border-color: #e8e2d9; color: #6b6459; }
+  .context {
+    font-size: 11px; color: #a89e94; line-height: 1.6;
+    border-top: 1px solid #f0ece6; padding-top: 10px;
+  }
+  .context strong { color: #6b6459; }
+
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #a89e94; margin-bottom: 12px;
+    margin-top: 32px;
+  }
+
+  footer {
+    margin-top: 48px; font-size: 12px; color: #a89e94;
+  }
+</style>
+</head>
+<body>
+
+<h1>📞 Bel-oefening — Scenario's</h1>
+<p class="subtitle">VU Education Lab · 8 scenario's · 3 moeilijkheidsgraden</p>
+
+<div class="section-title">Moeilijkheidsgraden</div>
+<div class="difficulty-row">
+  <div class="diff-badge diff-easy">
+    😊 Rustig
+    <span class="diff-desc">Geduldig, geeft ruimte, wacht af bij stiltes</span>
+  </div>
+  <div class="diff-badge diff-medium">
+    😐 Normaal
+    <span class="diff-desc">Professioneel, vraagt door bij stilte of onduidelijkheid</span>
+  </div>
+  <div class="diff-badge diff-hard">
+    😰 Pittig
+    <span class="diff-desc">Gehaast, onderbreekt, stelt tegenvragen, zet in de wacht</span>
+  </div>
+</div>
+
+<div class="section-title">Scenario's</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">🎓</div>
+      <div><div class="name">Studiesecretariaat</div><div class="sub">Roos — studiesecretariaat</div></div>
+    </div>
+    <div class="desc">Vraag naar je cijfers, een herkansing of een vrijstelling.</div>
+    <div class="character">Zakelijk en weinig enthousiast. Heeft elke vraag al duizend keer gehoord. Sterk formulier-reflex: "dat moet digitaal worden ingediend."</div>
+    <div class="tags">
+      <span class="tag tag-shimmer">stem: shimmer</span>
+      <span class="tag tag-extra">hoog register</span>
+      <span class="tag tag-extra">formeel</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> cijfer betwisten · herkansing aanvragen · vrijstelling · studieadvies · inschrijving voor een vak</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">💻</div>
+      <div><div class="name">IT Helpdesk</div><div class="sub">Daan — IT helpdesk</div></div>
+    </div>
+    <div class="desc">Laptop doet het niet, geen toegang tot Teams of Brightspace.</div>
+    <div class="character">Technisch jargon, stelt snel veel vragen achter elkaar. Licht verbaasd als de vraag simpel is. Gaat uit van basiskennis die bellers vaak niet hebben.</div>
+    <div class="tags">
+      <span class="tag tag-echo">stem: echo</span>
+      <span class="tag tag-extra">snel tempo</span>
+      <span class="tag tag-extra">jargon</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> wachtwoord resetten · wifi-problemen · geen toegang Teams/Brightspace · software installeren · studentenaccount</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">🧑‍💼</div>
+      <div><div class="name">Studentendecaan</div><div class="sub">Miriam — studentendecaan</div></div>
+    </div>
+    <div class="desc">Meld een persoonlijke omstandigheid of vraag om een gesprek.</div>
+    <div class="character">Warm en betrokken, maar drukke agenda. Vraagt door en neemt geen genoegen met vage antwoorden. Soms teleurstellend nieuws over wat mogelijk is.</div>
+    <div class="tags">
+      <span class="tag tag-shimmer">stem: shimmer</span>
+      <span class="tag tag-extra">emotioneel geladen</span>
+      <span class="tag tag-extra">persoonlijk</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> bijzondere omstandigheden melden · uitstel tentamen · studievertraging bespreken · afspraak maken</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">🏥</div>
+      <div><div class="name">Huisartsenpraktijk</div><div class="sub">Sandra — receptioniste</div></div>
+    </div>
+    <div class="desc">Maak een afspraak of vraag iets na bij de huisarts.</div>
+    <div class="character">Gehaast, vraagt altijd om naam en geboortedatum. Zelfde-dag-afspraken zijn bijna nooit mogelijk. Efficiënt en to the point.</div>
+    <div class="tags">
+      <span class="tag tag-shimmer">stem: shimmer</span>
+      <span class="tag tag-extra">hoog tempo</span>
+      <span class="tag tag-extra">formeel</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> afspraak maken · herhaalrecept aanvragen · uitslag opvragen · doorverwijzing</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">🏠</div>
+      <div><div class="name">Verhuurder / kamer</div><div class="sub">Bas — verhuurder</div></div>
+    </div>
+    <div class="desc">Meld een probleem in je kamer of studentenwoning.</div>
+    <div class="character">Nonchalant en laconiek. Stelt oplossingen graag uit. Vraagt of je het zelf al hebt geprobeerd. Bagatelliseert kleine problemen.</div>
+    <div class="tags">
+      <span class="tag tag-echo">stem: echo</span>
+      <span class="tag tag-extra">laag register</span>
+      <span class="tag tag-extra">informeel</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> lekkage of storing melden · sleutelprobleem · huur of contract · iets kapot in de woning</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">🚌</div>
+      <div><div class="name">OV-klantenservice</div><div class="sub">Fatima — OV klantenservice</div></div>
+    </div>
+    <div class="desc">Studentenreisproduct, OV-chipkaart of restitutie aanvragen.</div>
+    <div class="character">Werkt strikt op script. Verwijst snel naar website of app. Vraagt altijd om klantnummer. Kan veel dingen "niet zien in het systeem."</div>
+    <div class="tags">
+      <span class="tag tag-shimmer">stem: shimmer</span>
+      <span class="tag tag-extra">formeel register</span>
+      <span class="tag tag-extra">script-gedreven</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> reisproduct activeren of stopzetten · restitutie aanvragen · chipkaart kwijt · saldo opvragen</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">💼</div>
+      <div><div class="name">Stagebedrijf</div><div class="sub">Kevin — HR medewerker</div></div>
+    </div>
+    <div class="desc">Belt terug na een sollicitatie of bevestigt interesse in een stageplek.</div>
+    <div class="character">Zakelijk en beoordelend. Let sterk op hoe zeker de beller klinkt. Stelt gerichte vragen over motivatie en beschikbaarheid. Weinig positieve feedback tijdens het gesprek.</div>
+    <div class="tags">
+      <span class="tag tag-echo">stem: echo</span>
+      <span class="tag tag-extra">spannend scenario</span>
+      <span class="tag tag-extra">beoordelend</span>
+    </div>
+    <div class="context"><strong>Typische situaties:</strong> interesse in stageplek bevestigen · vragen over de stage · afspraak inplannen voor kennismaking</div>
+  </div>
+
+  <div class="card">
+    <div class="card-top">
+      <div class="emoji-wrap">💊</div>
+      <div><div class="name">Apotheek</div><div class="sub">Thomas — apothekersassistent</div></div>
+    </div>
+    <div class="desc">Recept ophalen of een vraag stellen over medicatie.</div>
+    <div class="character">Vriendelijk maar nauwgezet. Vraagt altijd naar naam en geboortedatum. Geeft geen medisch advies, verwijst door naar apotheker of huisarts.</div>
+    <div class="tags">
+      <span class="tag tag-echo">stem: echo</span>
+      <span class="tag tag-extra">formeel register</span>
+      <span class="tag tag-extra">nauwgezet</span>
+    </div>
+    <div class="context"><strong>Typische vragen:</strong> recept ophalen of bestellen · bijwerkingen of dosering · openingstijden</div>
+  </div>
+
+</div>
+
+<footer>Bel-oefening · VU Education Lab · april 2026</footer>
+
+</body>
+</html>
