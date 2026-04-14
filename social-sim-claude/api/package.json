@@ -1,8 +1,6 @@
 {
   "name": "social-sim-api",
   "version": "1.0.0",
-  "description": "Azure Functions proxy for social-sim-claude — forwards /api/chat, /api/tts, /api/stt to Azure OpenAI and ElevenLabs. Keys live in Application Settings, never in the bundle.",
-  "main": "index.js",
-  "engines": { "node": ">=18" },
-  "dependencies": {}
+  "description": "Azure Functions proxy for social-sim-claude.",
+  "engines": { "node": ">=18" }
 }
