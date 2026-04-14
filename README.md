@@ -17,10 +17,10 @@ who find everyday academic communication hard.
 Filled in after the first successful Azure deploy — see
 [`SECURITY.md`](./SECURITY.md) for how secrets are handled in production.
 
-- Landing: _TBD_
-- Email coach: _TBD_
-- Call trainer: _TBD_
-- Social sim: _TBD_
+- Landing: <https://jolly-island-000bbf303.7.azurestaticapps.net>
+- Email coach: <https://green-ocean-025167c03.7.azurestaticapps.net>
+- Call trainer: <https://lively-cliff-0618d0003.7.azurestaticapps.net>
+- Social sim: <https://salmon-coast-0aac3d503.7.azurestaticapps.net>
 
 ## Local development
 
