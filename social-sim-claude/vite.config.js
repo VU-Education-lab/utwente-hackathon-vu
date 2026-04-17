@@ -78,8 +78,10 @@ function logServerPlugin() {
   };
 }
 
-export default defineConfig({
-  base: './',
+export default defineConfig(({ command }) => ({
+  // In prod the social-sim build is mounted under /sim/ inside the unified
+  // Static Web App. In dev (`npm run dev`) Vite serves at the root.
+  base: command === 'build' ? '/sim/' : '/',
   server: {
     port: 5173,
     open: true,
@@ -97,4 +99,4 @@ export default defineConfig({
     sourcemap: false,
   },
   plugins: [logServerPlugin()],
-});
+}));

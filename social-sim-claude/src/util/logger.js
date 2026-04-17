@@ -29,23 +29,25 @@ function send(level, category, message, data) {
   } else {
     console.log(`[${category}]`, message, data ?? '');
   }
-  // Server log file (best effort)
-  try {
-    const safeData = sanitizeForJSON(data);
-    fetch('/__log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ts: new Date().toISOString(),
-        level,
-        category,
-        message,
-        data: safeData,
-      }),
-      keepalive: true,
-    }).catch(() => {});
-  } catch {
-    // never throw from a logger
+  // Server log file (dev only — Vite middleware route).
+  if (import.meta.env?.DEV) {
+    try {
+      const safeData = sanitizeForJSON(data);
+      fetch('/__log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ts: new Date().toISOString(),
+          level,
+          category,
+          message,
+          data: safeData,
+        }),
+        keepalive: true,
+      }).catch(() => {});
+    } catch {
+      // never throw from a logger
+    }
   }
 }
 

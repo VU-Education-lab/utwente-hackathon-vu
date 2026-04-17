@@ -35,6 +35,7 @@ env/
 
 # Local archives / backups — created during monorepo assembly
 .pre-monorepo-backup/
+.local-original/
 
 # Dev-only log files
 social-sim.log

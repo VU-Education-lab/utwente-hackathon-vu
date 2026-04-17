@@ -7,11 +7,15 @@ import { VisemeAnimator } from './VisemeAnimator.js';
 const loader = new GLTFLoader();
 const fbxLoader = new FBXLoader();
 
+// Respect Vite's base path ('/sim/' in prod, '/' in dev) so this works both
+// under the deployed shell and during local `npm run dev`.
+const MODEL_BASE = (import.meta.env.BASE_URL || '/').replace(/\/?$/, '/') + 'models/';
+
 // Cache the idle animation clips so we only load the FBX once.
 let _idleClipsPromise = null;
 function loadIdleClips() {
   if (!_idleClipsPromise) {
-    _idleClipsPromise = fbxLoader.loadAsync('/models/idle.fbx').then((fbx) => {
+    _idleClipsPromise = fbxLoader.loadAsync(MODEL_BASE + 'idle.fbx').then((fbx) => {
       return fbx.animations; // AnimationClip[]
     });
   }
@@ -57,7 +61,7 @@ export class Character3D {
 
   // ---------- model loading ----------
   async _loadModel(avatarFile) {
-    const gltf = await loader.loadAsync('/models/' + avatarFile);
+    const gltf = await loader.loadAsync(MODEL_BASE + avatarFile);
     const avatar = gltf.scene;
 
     // Measure and scale to a consistent ~1.7m height.

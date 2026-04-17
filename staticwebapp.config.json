@@ -1,0 +1,31 @@
+{
+  "platform": {
+    "apiRuntime": "node:20"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/api/*",
+      "/app.html",
+      "/email/*",
+      "/call/*",
+      "/sim/*",
+      "/models/*",
+      "/assets/*",
+      "*.{glb,fbx,png,jpg,jpeg,svg,css,js,map,json,webp,ico,woff,woff2,mp3,wav}"
+    ]
+  },
+  "mimeTypes": {
+    ".glb": "model/gltf-binary",
+    ".fbx": "application/octet-stream"
+  },
+  "routes": [
+    {
+      "route": "/call/*",
+      "headers": {
+        "Cross-Origin-Opener-Policy": "same-origin",
+        "Cross-Origin-Embedder-Policy": "require-corp"
+      }
+    }
+  ]
+}

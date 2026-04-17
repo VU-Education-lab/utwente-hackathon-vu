@@ -5,8 +5,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": ["get"],
-      "route": "ping"
+      "methods": ["post"],
+      "route": "realtime-token"
     },
     { "type": "http", "direction": "out", "name": "res" }
   ]

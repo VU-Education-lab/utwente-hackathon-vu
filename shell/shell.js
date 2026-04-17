@@ -12,27 +12,21 @@
 
   const STEPS = {
     email: {
-      // Served from the same Python http.server that serves the shell.
-      // Path is relative to the shell folder.
-      url: '../e-mail-coach/prototype_v2/index.html',
+      url: '/email/',
       title: 'Write the email',
       eyebrow: 'Step 1 of 3',
       next: 'call',
       index: 0,
     },
     call: {
-      url: '../bel-angst/index.html',
+      url: '/call/',
       title: 'Make the call',
       eyebrow: 'Step 2 of 3',
       next: 'sim',
       index: 1,
     },
     sim: {
-      // social-sim-claude runs on its own Vite dev server. The team
-      // member working on it just runs `npm run dev` in that folder
-      // and we point an iframe at it. If you've built it for prod
-      // instead, change this to '../social-sim-claude/dist/index.html'.
-      url: 'http://localhost:5173/',
+      url: '/sim/',
       title: 'Step into the room',
       eyebrow: 'Step 3 of 3',
       next: null,
