@@ -33,4 +33,5 @@ jobs:
           api_location: 'api'
           output_location: ''
           skip_app_build: true
-          skip_api_build: true
+          # Let the action run `npm install` in api/ so busboy (and any
+          # future deps) are present on the Functions host.
