@@ -1,13 +1,11 @@
-// ElevenLabs text-to-speech via the /api/tts proxy.
+// Azure OpenAI text-to-speech via the /api/tts proxy.
 // Key is never in the bundle — the Function forwards the request.
-// Keeps the existing speak/stopAll/setMuted API intact.
 
 import { logger } from '../util/logger.js';
 
-const MODEL_ID = 'eleven_turbo_v2_5';
-const OUTPUT_FORMAT = 'mp3_44100_64';
 const API_BASE = (import.meta.env.VITE_API_BASE || '/api').replace(/\/$/, '');
 const ENDPOINT = `${API_BASE}/tts`;
+const DEFAULT_VOICE = 'alloy';
 
 export class TTSManager {
   constructor() {
@@ -23,7 +21,7 @@ export class TTSManager {
     if (m) this.stopAll();
   }
 
-  async speak({ text, elevenVoiceId, characterId, onStart, onEnd }) {
+  async speak({ text, voice, characterId, onStart, onEnd }) {
     const endOnce = () => { onEnd?.(); };
     if (!text) return endOnce();
 
@@ -34,32 +32,16 @@ export class TTSManager {
       setTimeout(endOnce, Math.min(2200, text.length * 45));
       return;
     }
-    if (!elevenVoiceId) {
-      logger.warn('tts', 'no elevenVoiceId for character — skipping audio', { characterId });
-      onStart?.();
-      setTimeout(endOnce, Math.min(2200, text.length * 45));
-      return;
-    }
 
     const ac = new AbortController();
     const t0 = performance.now();
+    const chosenVoice = voice || DEFAULT_VOICE;
     let response;
     try {
       response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
-        body: JSON.stringify({
-          text,
-          voice: elevenVoiceId,
-          model_id: MODEL_ID,
-          output_format: OUTPUT_FORMAT,
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.8,
-            style: 0.15,
-            use_speaker_boost: true,
-          },
-        }),
+        body: JSON.stringify({ text, voice: chosenVoice, format: 'mp3' }),
         signal: ac.signal,
       });
     } catch (err) {
@@ -69,7 +51,7 @@ export class TTSManager {
 
     if (!response.ok) {
       const body = await response.text().catch(() => '');
-      logger.error('tts', `tts proxy HTTP ${response.status}`, { body, voiceId: elevenVoiceId });
+      logger.error('tts', `tts proxy HTTP ${response.status}`, { body, voice: chosenVoice });
       return endOnce();
     }
 

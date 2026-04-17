@@ -351,7 +351,7 @@ function handleNewLine(entry) {
   char.setTalking(true);
   tts.speak({
     text: entry.text,
-    elevenVoiceId: scenarioChar.elevenVoiceId,
+    voice: scenarioChar.voice,
     characterId: entry.speakerId,
     onStart: () => {},
     onEnd: () => {

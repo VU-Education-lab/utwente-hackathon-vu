@@ -1,40 +1,39 @@
-// POST /api/tts — forwards to ElevenLabs /v1/text-to-speech/{voice}.
-// Body: { text, voice, model_id?, voice_settings?, output_format? }
-// Returns: audio/mpeg binary.
+// POST /api/tts — forwards to Azure OpenAI Audio (Speech) on the same
+// resource we use for chat. Body: { text, voice?, format? }. Returns audio.
+
+const API_VERSION = '2025-03-01-preview';
+const VALID_VOICES = new Set(['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer', 'coral', 'sage', 'verse']);
 
 module.exports = async function (context, req) {
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey) {
-    context.res = { status: 500, body: { error: 'ElevenLabs is not configured.' } };
+  const endpoint   = process.env.AZURE_OPENAI_ENDPOINT;
+  const apiKey     = process.env.AZURE_OPENAI_API_KEY;
+  const deployment = process.env.AZURE_OPENAI_TTS_DEPLOYMENT || 'tts';
+
+  if (!endpoint || !apiKey) {
+    context.res = { status: 500, body: { error: 'Azure OpenAI is not configured.' } };
     return;
   }
 
-  const { text, voice, model_id, voice_settings, output_format } = req.body || {};
-  if (!text || !voice) {
-    context.res = { status: 400, body: { error: 'Missing text or voice.' } };
+  const { text, voice, format } = req.body || {};
+  if (!text) {
+    context.res = { status: 400, body: { error: 'Missing text.' } };
     return;
   }
 
-  const fmt = output_format || 'mp3_44100_64';
-  const url = `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=${fmt}`;
+  const chosenVoice = VALID_VOICES.has(voice) ? voice : 'alloy';
+  const responseFormat = ['mp3', 'opus', 'aac', 'flac', 'wav', 'pcm'].includes(format) ? format : 'mp3';
+
+  const url = `${endpoint.replace(/\/$/, '')}/openai/deployments/${encodeURIComponent(deployment)}/audio/speech?api-version=${API_VERSION}`;
 
   try {
     const upstream = await fetch(url, {
       method: 'POST',
-      headers: {
-        'xi-api-key': apiKey,
-        'Content-Type': 'application/json',
-        Accept: 'audio/mpeg',
-      },
+      headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text,
-        model_id: model_id || 'eleven_turbo_v2_5',
-        voice_settings: voice_settings || {
-          stability: 0.5,
-          similarity_boost: 0.8,
-          style: 0.15,
-          use_speaker_boost: true,
-        },
+        model: deployment,
+        input: text,
+        voice: chosenVoice,
+        response_format: responseFormat,
       }),
     });
 
@@ -45,9 +44,15 @@ module.exports = async function (context, req) {
     }
 
     const buf = Buffer.from(await upstream.arrayBuffer());
+    const mime = responseFormat === 'mp3' ? 'audio/mpeg'
+      : responseFormat === 'wav' ? 'audio/wav'
+      : responseFormat === 'opus' ? 'audio/ogg'
+      : responseFormat === 'aac' ? 'audio/aac'
+      : responseFormat === 'flac' ? 'audio/flac'
+      : 'application/octet-stream';
     context.res = {
       status: 200,
-      headers: { 'Content-Type': 'audio/mpeg', 'Cache-Control': 'no-store' },
+      headers: { 'Content-Type': mime, 'Cache-Control': 'no-store' },
       body: buf,
       isRaw: true,
     };

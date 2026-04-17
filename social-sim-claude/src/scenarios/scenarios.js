@@ -3,10 +3,9 @@
 // user walks in. Difficulty is 1 (easiest) to 3 (hardest).
 //
 // Personalities are kept short on purpose so multiple of them fit into the
-// LLM context cheaply. Each character has an `elevenVoiceId` (an ElevenLabs
-// premade voice id, https://elevenlabs.io/voice-library) chosen to match
-// their personality and gender. Voices are picked so that no two characters
-// in the SAME scene share the same voice.
+// LLM context cheaply. Each character has a `voice` — one of the Azure
+// OpenAI TTS voices (alloy, echo, fable, onyx, nova, shimmer) — chosen so
+// no two characters in the SAME scene share the same voice.
 
 export const SCENARIOS = [
   {
@@ -30,8 +29,8 @@ export const SCENARIOS = [
         role: 'second-year CS student',
         personality:
           'warm, curious, a bit of a nerd. Gets excited about clever solutions. Patient with shy people.',
-        // Rachel — calm, warm young American female
-        elevenVoiceId: '21m00Tcm4TlvDq8ikWAM',
+        // nova — warm female
+        voice: 'nova',
         avatarFile: 'avatar-female-1.glb',
         position: [-2.0, 0, -2.5],
       },
@@ -42,8 +41,8 @@ export const SCENARIOS = [
         personality:
           'sarcastic but harmless, complains about workload, secretly likes the hard problems. ' +
           'Talks fast.',
-        // Liam — articulate young American male
-        elevenVoiceId: 'TX3LPaxmHKxFdv7VOQHJ',
+        // echo — articulate male
+        voice: 'echo',
         avatarFile: 'avatar-male-1.glb',
         position: [0.5, 0, -2.8],
       },
@@ -53,8 +52,8 @@ export const SCENARIOS = [
         role: 'exchange student from Delft',
         personality:
           'thoughtful, soft-spoken, asks gentle clarifying questions. Knows the material well.',
-        // Matilda — soft, friendly female
-        elevenVoiceId: 'XrExE9yKIg1WjnnlVkGX',
+        // shimmer — soft female
+        voice: 'shimmer',
         avatarFile: 'female02_glb.glb',
         position: [-0.7, 0, -1.6],
       },
@@ -82,8 +81,8 @@ export const SCENARIOS = [
         personality:
           'practical, friendly, tries to make sure everyone is contributing. Will ask the new person ' +
           'directly what part they want to take.',
-        // Lily — warm, friendly female
-        elevenVoiceId: 'pFZP5JQG7iQjIQuC4Bku',
+        // nova — friendly female
+        voice: 'nova',
         avatarFile: 'avatar-female-1.glb',
         position: [-2.3, 0, -2.3],
       },
@@ -94,8 +93,8 @@ export const SCENARIOS = [
         personality:
           'reserved, gives short precise answers, looks at the table when speaking. Surprisingly funny ' +
           'if drawn out.',
-        // Brian — deep, thoughtful, measured male
-        elevenVoiceId: 'nPczCjzI2devNBz1zQrb',
+        // onyx — deep, measured male
+        voice: 'onyx',
         avatarFile: 'avatar-male-1.glb',
         position: [-0.1, 0, -3.3],
       },
@@ -105,8 +104,8 @@ export const SCENARIOS = [
         role: 'visiting student, very social',
         personality:
           'high energy, asks the new person 3 questions in a row, sincere not pushy.',
-        // Domi — strong, confident, energetic young female
-        elevenVoiceId: 'AZnzlk1XvdvUeBnXmlld',
+        // shimmer — energetic female (distinct from nova in this scene)
+        voice: 'shimmer',
         avatarFile: 'female02_glb.glb',
         position: [2.2, 0, -2.3],
       },
@@ -134,8 +133,8 @@ export const SCENARIOS = [
         personality:
           'a bit nervous herself, friendly to anyone who looks more nervous than she does. ' +
           'Forms quick alliances.',
-        // Bella — soft, gentle young female
-        elevenVoiceId: 'EXAVITQu4vr4xnSDxMaL',
+        // fable — softer, with a British lilt
+        voice: 'fable',
         avatarFile: 'female02_glb.glb',
         position: [-1.4, 0, -2.4],
       },
@@ -145,8 +144,8 @@ export const SCENARIOS = [
         role: 'career office organizer',
         personality:
           'upbeat, introduces people to each other, remembers everyone\'s name. Loves connecting strangers.',
-        // Jessica — expressive, animated young female
-        elevenVoiceId: 'cgSgspJ2msm6clMCkdW9',
+        // nova — expressive, animated female
+        voice: 'nova',
         avatarFile: 'avatar-female-1.glb',
         position: [0.0, 0, -2.7],
       },
@@ -156,8 +155,8 @@ export const SCENARIOS = [
         role: 'final-year engineering student',
         personality:
           'earnest, a little awkward, asks thoughtful questions about careers. Tries too hard but means well.',
-        // Liam — articulate young American male
-        elevenVoiceId: 'TX3LPaxmHKxFdv7VOQHJ',
+        // echo — articulate male
+        voice: 'echo',
         avatarFile: 'avatar-male-1.glb',
         position: [1.3, 0, -2.2],
       },

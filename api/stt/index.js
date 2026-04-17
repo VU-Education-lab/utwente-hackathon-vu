@@ -1,10 +1,16 @@
-// POST /api/stt — forwards a multipart audio upload to ElevenLabs Scribe.
-// We pass the raw request body through so the boundary stays intact.
+// POST /api/stt — forwards a multipart audio upload to Azure OpenAI
+// (whisper deployment on vu-speakeasy-ai). The client sends a normal
+// multipart/form-data body with a `file` field; we add the api-key.
+
+const API_VERSION = '2024-10-21';
 
 module.exports = async function (context, req) {
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey) {
-    context.res = { status: 500, body: { error: 'ElevenLabs is not configured.' } };
+  const endpoint   = process.env.AZURE_OPENAI_ENDPOINT;
+  const apiKey     = process.env.AZURE_OPENAI_API_KEY;
+  const deployment = process.env.AZURE_OPENAI_STT_DEPLOYMENT || 'whisper';
+
+  if (!endpoint || !apiKey) {
+    context.res = { status: 500, body: { error: 'Azure OpenAI is not configured.' } };
     return;
   }
 
@@ -14,13 +20,12 @@ module.exports = async function (context, req) {
     return;
   }
 
+  const url = `${endpoint.replace(/\/$/, '')}/openai/deployments/${encodeURIComponent(deployment)}/audio/transcriptions?api-version=${API_VERSION}`;
+
   try {
-    const upstream = await fetch('https://api.elevenlabs.io/v1/speech-to-text', {
+    const upstream = await fetch(url, {
       method: 'POST',
-      headers: {
-        'xi-api-key': apiKey,
-        'Content-Type': contentType,
-      },
+      headers: { 'api-key': apiKey, 'Content-Type': contentType },
       body: req.rawBody instanceof Buffer ? req.rawBody : Buffer.from(req.rawBody || req.body),
     });
 

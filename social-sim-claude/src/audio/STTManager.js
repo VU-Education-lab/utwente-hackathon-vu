@@ -1,9 +1,8 @@
-// ElevenLabs speech-to-text (Scribe) via the /api/stt proxy.
-// Multipart upload is passed through as-is; the Function adds the xi-api-key.
+// Azure OpenAI whisper speech-to-text via the /api/stt proxy.
+// Multipart upload is passed through as-is; the Function adds the api-key.
 
 import { logger } from '../util/logger.js';
 
-const MODEL_ID = 'scribe_v1';
 const API_BASE = (import.meta.env.VITE_API_BASE || '/api').replace(/\/$/, '');
 const ENDPOINT = `${API_BASE}/stt`;
 
@@ -78,11 +77,9 @@ export class STTManager {
       : 'webm';
 
     const form = new FormData();
-    form.append('model_id', MODEL_ID);
     form.append('file', blob, `recording.${ext}`);
-    form.append('language_code', 'eng');
-    form.append('tag_audio_events', 'false');
-    form.append('diarize', 'false');
+    form.append('language', 'en');
+    form.append('response_format', 'json');
 
     const t0 = performance.now();
     let response;
@@ -104,7 +101,7 @@ export class STTManager {
     logger.info('stt', `transcribed in ${Math.round(performance.now() - t0)}ms`, {
       text,
       audioBytes: blob.size,
-      lang: data?.language_code,
+      lang: data?.language,
     });
     return text;
   }
