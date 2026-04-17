@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>E-mailStories — Hybride prototype</title>
 <link rel="stylesheet" href="styles.css">
 <!-- SpeakEasy shell theme — overrides local :root tokens with brand palette.
-     Loaded last so the cascade wins. Comment out to develop in isolation. -->
-<link rel="stylesheet" href="../../shell/theme.css">
+     Resolves to /theme.css in the deployed monorepo (dist/email/ -> dist/).
+     In standalone local dev (npx serve .) it simply 404s, which is fine. -->
+<link rel="stylesheet" href="/theme.css">
 </head>
 <body>
 

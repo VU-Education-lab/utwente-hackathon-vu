@@ -3,6 +3,7 @@
    ============================================================ */
 
 :root {
+  color-scheme: light;
   --bg: #FAF6F0;
   --bg-warm: #F4ECE0;
   --ink: #2A2520;
@@ -16,16 +17,6 @@
   --good: #8BAA7C;
   --shadow: 0 20px 60px -20px rgba(60, 40, 20, 0.25);
   --radius: 18px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1F1A15;
-    --bg-warm: #2A231C;
-    --ink: #F4ECE0;
-    --ink-soft: #B8AC9E;
-    --line: #3A322A;
-  }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -236,9 +227,6 @@ button {
   border-color: var(--accent);
   background: #FDF6F0;
 }
-@media (prefers-color-scheme: dark) {
-  .learn-card:hover { background: #2E241C; }
-}
 .learn-card-icon {
   width: 56px;
   height: 56px;
@@ -386,12 +374,6 @@ button {
 .mode-option input[type="radio"]:checked + .mode-card {
   border-color: var(--accent);
   background: #FDF3EC;
-}
-
-@media (prefers-color-scheme: dark) {
-  .mode-option input[type="radio"]:checked + .mode-card {
-    background: #3A2A20;
-  }
 }
 
 /* Model status */

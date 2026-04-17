@@ -2,7 +2,7 @@
 // Applicatielogica voor Bel-oefening.
 // Importeert CONFIG en SCENARIOS; beheert alle state en UI-interacties.
 
-import CONFIG, { OPENAI, AZURE, getProvider } from './config.js';
+import CONFIG from './config.js';
 import { SCENARIOS, DIFFICULTY, buildInstruction } from './scenarios.js';
 
 // ── STATE ──────────────────────────────────────────────────────────────────
@@ -26,63 +26,14 @@ const state = {
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 export function init() {
-  // Altijd het provider-keuzescherm tonen — vorige keuze pre-selecteren
-  const saved = localStorage.getItem('bel_provider') || 'openai';
-  document.querySelectorAll('.provider-btn').forEach(b =>
-    b.classList.toggle('selected', b.dataset.provider === saved)
-  );
-  showScreen('screenProvider');
-}
-
-export function selectProvider(name) {
-  CONFIG.switchProvider(name);
-  // Update UI knoppen
-  document.querySelectorAll('.provider-btn').forEach(b =>
-    b.classList.toggle('selected', b.dataset.provider === name)
-  );
-  if (name === 'azure') {
-    showBriefing();
-  } else if (CONFIG.OPENAI_KEY) {
-    showBriefing();
-  } else {
-    showScreen('screenSetup');
-  }
+  // Azure is the only backend — go straight to the briefing.
+  showBriefing();
 }
 
 // ── SCREENS ────────────────────────────────────────────────────────────────
 export function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-}
-
-// ── SETUP ──────────────────────────────────────────────────────────────────
-export function onKeyInput() {
-  const val = document.getElementById('apiKey').value;
-  document.getElementById('clearBtn').classList.toggle('visible', val.length > 0);
-}
-
-export function clearKey() {
-  document.getElementById('apiKey').value = '';
-  document.getElementById('clearBtn').classList.remove('visible');
-}
-
-export function forgetKey() {
-  CONFIG.forgetKey();
-  document.getElementById('apiKey').value = '';
-  document.getElementById('forgetBtn').style.display = 'none';
-  showScreen('screenProvider');
-}
-
-export function startSession() {
-  const val = document.getElementById('apiKey').value.trim();
-  if (!val.startsWith('sk-')) {
-    document.getElementById('errorMsg').textContent = 'Voer een geldige API-sleutel in (begint met sk-)';
-    return;
-  }
-  CONFIG.saveKey(val);
-  document.getElementById('errorMsg').textContent = '';
-  document.getElementById('forgetBtn').style.display = 'block';
-  showBriefing();
 }
 
 // ── BRIEFING ───────────────────────────────────────────────────────────────
@@ -144,7 +95,7 @@ export async function answerCall() {
     // 1. Ephemeral token ophalen
     const tokenRes = await fetch(CONFIG.TOKEN_URL, {
       method: 'POST',
-      headers: CONFIG.tokenHeaders(CONFIG.OPENAI_KEY),
+      headers: CONFIG.tokenHeaders(),
       body: JSON.stringify(CONFIG.tokenBody(CONFIG.REALTIME_MODEL, state.scenario.voice, instruction)),
     });
 
@@ -177,7 +128,7 @@ export async function answerCall() {
         type: 'session.update',
         session: {
           turn_detection: null,
-          input_audio_transcription: { model: CONFIG.PROVIDER_NAME === 'azure' ? 'whisper' : 'whisper-1', language: CONFIG.TRANSCRIPTION_LANGUAGE },
+          input_audio_transcription: { model: 'whisper', language: CONFIG.TRANSCRIPTION_LANGUAGE },
         },
       }));
       state.dc.send(JSON.stringify({ type: 'response.create' }));
@@ -456,7 +407,7 @@ score is 0.0 (heel slecht gesprek) tot 1.0 (uitstekend gesprek).`;
   try {
     const res = await fetch(CONFIG.FEEDBACK_URL, {
       method: 'POST',
-      headers: CONFIG.feedbackHeaders(CONFIG.OPENAI_KEY),
+      headers: CONFIG.feedbackHeaders(),
       body: JSON.stringify({
         model: CONFIG.FEEDBACK_MODEL,
         max_tokens: CONFIG.FEEDBACK_MAX_TOKENS,
@@ -544,7 +495,7 @@ reden is een korte Nederlandse omschrijving van de doorslag gevende factor, bijv
     try {
       const res = await fetch(CONFIG.FEEDBACK_URL, {
         method: 'POST',
-        headers: CONFIG.feedbackHeaders(CONFIG.OPENAI_KEY),
+        headers: CONFIG.feedbackHeaders(),
         body: JSON.stringify({
           model: CONFIG.FEEDBACK_MODEL,
           max_tokens: 20,

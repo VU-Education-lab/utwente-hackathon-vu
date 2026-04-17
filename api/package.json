@@ -1,6 +1,9 @@
 {
-  "name": "social-sim-api",
+  "name": "speakeasy-api",
   "version": "1.0.0",
-  "description": "Azure Functions proxy for social-sim-claude.",
-  "engines": { "node": ">=18" }
+  "description": "Azure Functions proxy for SpeakEasy (chat/tts/stt/realtime-token).",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "busboy": "^1.6.0"
+  }
 }
